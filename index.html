@@ -247,6 +247,16 @@ td.txt{max-width:620px;min-width:240px}
 @media (max-width:760px){.hs{display:none}}
 .more{text-align:center;margin-top:14px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:10px;background:var(--s2);font-weight:600;font-size:14px}
+.cc .top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.tone{font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px}
+.cc .n{font:500 30px/1 var(--f-num);letter-spacing:-.04em;margin-left:auto}
+.cc h3{font:600 16px/1.3 var(--f-ui);margin:0 0 6px}
+.cc p{margin:0 0 12px;color:var(--t2);font-size:13.5px}
+.cq{background:var(--s2);border-radius:11px;padding:10px 12px;margin-bottom:6px}
+.cq p{margin:0 0 4px;font:italic 400 14.5px/1.4 var(--f-q);color:var(--t1)}
+.cc:not(.open) .cq p{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.cq .src{font-size:11.5px;color:var(--t3)}
+.cc .more2{font-size:13px;font-weight:600;color:var(--accent);padding:6px 0}
 .op .v{font:500 36px/1 var(--f-num);letter-spacing:-.04em}
 .op p{color:var(--t2);margin:10px 0 0;font-size:14px}
 .method p{color:var(--t2);margin:0 0 10px;line-height:1.55}
@@ -262,6 +272,7 @@ td.txt{max-width:620px;min-width:240px}
     <button data-v="mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>Mapa</button>
     <button data-v="tiendas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Tiendas</button>
     <button data-v="temas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="15" r="3"/><circle cx="15" cy="7" r="4"/><circle cx="18" cy="17" r="2"/></svg>Temas y equipos</button>
+    <button data-v="competencia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h11l-3-3M17 17H6l3 3"/></svg>Competencia y canales</button>
     <button data-v="operacion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>Operación</button>
     <button data-v="resenas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Reseñas</button>
     <button data-v="metodo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>Método</button>
@@ -357,6 +368,20 @@ td.txt{max-width:620px;min-width:240px}
     </div>
   </section>
 
+  <section class="view" data-v="competencia">
+    <div class="grid">
+      <div class="panel c5">
+        <div class="ph"><div><h2>Cuándo gana y cuándo pierde la tienda</h2><div class="ann">Reseñas que mencionan otra marca, un operador u otro canal de venta, agrupadas por lo que cuentan.</div></div></div>
+        <svg class="ch" id="compch" role="img" aria-label="Menciones de competencia y canales"></svg>
+      </div>
+      <div class="panel c7">
+        <div class="ph"><div><h2>Lectura</h2></div></div>
+        <div id="comp-read" class="method"></div>
+      </div>
+    </div>
+    <div class="grid" id="compcards" style="margin-top:14px"></div>
+  </section>
+
   <section class="view" data-v="operacion">
     <div class="grid" id="ops"></div>
   </section>
@@ -425,14 +450,14 @@ td.txt{max-width:620px;min-width:240px}
   const scopeIdx = () => new Set(scopeStores().map((s) => s.i));
 
   // ---------- Views ----------
-  const VIEWS = { resumen: ['Resumen', 'Lo esencial de las reseñas de Google Maps'], territorios: ['Territorios de campaña', 'Cuatro briefs que salen de lo que la gente escribe'], mapa: ['Mapa', 'Arrastra, pellizca, gira e inclina. Al elegir una tienda, el mapa vuela hasta ella'], tiendas: ['Tiendas', 'Quién está fuera de lo normal y por qué'], temas: ['Temas y equipos', 'Qué convierte una visita en crítica · nacional'], operacion: ['Operación', 'Pendientes que afectan cualquier campaña que mande gente a Maps'], resenas: ['Reseñas', 'Las últimas 300 de cada tienda, tal como se escribieron y sin nombres de autor'], metodo: ['Método', 'De dónde salen los números y qué tan confiables son'] };
+  const VIEWS = { resumen: ['Resumen', 'Lo esencial de las reseñas de Google Maps'], territorios: ['Territorios de campaña', 'Cuatro briefs que salen de lo que la gente escribe'], mapa: ['Mapa', 'Arrastra, pellizca, gira e inclina. Al elegir una tienda, el mapa vuela hasta ella'], tiendas: ['Tiendas', 'Quién está fuera de lo normal y por qué'], temas: ['Temas y equipos', 'Qué convierte una visita en crítica · nacional'], competencia: ['Competencia y canales', 'Lo que la gente dice de Apple, Telcel, Liverpool y la tienda en línea dentro de las reseñas de Samsung'], operacion: ['Operación', 'Pendientes que afectan cualquier campaña que mande gente a Maps'], resenas: ['Reseñas', 'Las últimas 300 de cada tienda, tal como se escribieron y sin nombres de autor'], metodo: ['Método', 'De dónde salen los números y qué tan confiables son'] };
   let cur = null; const drawn = {};
   function show(v) {
     if (!VIEWS[v]) v = 'resumen'; cur = v;
     document.querySelectorAll('.view').forEach((s) => s.classList.toggle('on', s.dataset.v === v));
     document.querySelectorAll('#nav button').forEach((b) => b.classList.toggle('on', b.dataset.v === v));
     $('#vt').textContent = VIEWS[v][0]; $('#vs').textContent = VIEWS[v][1];
-    $('#f-estado').parentElement.style.visibility = ['metodo', 'temas', 'territorios'].includes(v) ? 'hidden' : 'visible';
+    $('#f-estado').parentElement.style.visibility = ['metodo', 'temas', 'territorios', 'competencia'].includes(v) ? 'hidden' : 'visible';
     if (location.hash.slice(1) !== v) history.replaceState(null, '', '#' + v);
     render(v); scrollTo(0, 0);
   }
@@ -443,6 +468,7 @@ td.txt{max-width:620px;min-width:240px}
     if (v === 'tiendas') { funnel(); flist('#flist', 20); renderStores(); }
     if (v === 'temas') { drivers(); forest(); }
     if (v === 'resenas') renderRevs();
+    if (v === 'competencia') comp();
   }
   document.querySelectorAll('#nav button').forEach((b) => b.onclick = () => show(b.dataset.v));
   document.querySelectorAll('[data-go]').forEach((b) => b.onclick = () => show(b.dataset.go));
@@ -727,6 +753,35 @@ td.txt{max-width:620px;min-width:240px}
     svg.selectAll('text.l').data(lab).join('text').attr('class', 'l').attr('x', (l) => Math.min(l.x, W - 150)).attr('y', (l) => l.y).attr('fill', css('--t1')).attr('font-size', 12).text((l) => l.s.nombre);
     const few = hi.filter((s) => s.n6 < 60).length;
     $('#fun-ins').innerHTML = hi.length ? `<b>${hi.length} ${hi.length === 1 ? 'tienda tiene' : 'tiendas tienen'} más críticas de las que su tamaño explica.</b> ${few ? `${few} de ellas recibieron menos de 60 reseñas en 6 meses: probablemente no las piden, así que su número refleja mejor la experiencia espontánea que el de las demás.` : ''}` : 'Ninguna tienda de esta selección está fuera de rango.';
+  }
+
+  // ---------- Competition ----------
+  const toneC = { gana: '--good', pierde: '--crit', mixto: '--warn' }, toneT = { gana: 'Gana la tienda', pierde: 'Pierde la tienda', mixto: 'Confusión' };
+  const openC = new Set();
+  function comp() {
+    const C = D.comp.slice().sort((a, b) => (a.tone === 'gana' ? -1 : 1) * 1000 + b.n - ((b.tone === 'gana' ? -1 : 1) * 1000 + a.n));
+    const svg = d3.select('#compch'); const W = W_('#compch'), rowH = 34, m = { l: 4, r: 4, t: 4, b: 8 }, H = m.t + m.b + C.length * rowH;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('height', H).selectAll('*').remove();
+    const mid = W * 0.5, x = d3.scaleLinear([0, d3.max(C, (d) => d.n)], [0, W * 0.5 - 40]);
+    const g = svg.selectAll('g').data(C).join('g').attr('transform', (d, i) => `translate(0,${m.t + i * rowH})`);
+    g.append('rect').attr('x', (d) => d.tone === 'gana' ? mid + 2 : mid - 2 - x(d.n)).attr('y', 6).attr('height', rowH - 12).attr('width', (d) => x(d.n)).attr('rx', 6).attr('fill', (d) => css(toneC[d.tone]));
+    g.append('text').attr('x', (d) => d.tone === 'gana' ? mid + 8 + x(d.n) : mid - 8 - x(d.n)).attr('y', rowH / 2).attr('dy', '0.35em').attr('text-anchor', (d) => d.tone === 'gana' ? 'start' : 'end').attr('fill', css('--t1')).attr('font-family', 'JetBrains Mono').attr('font-size', 13).text((d) => d.n);
+    g.append('text').attr('x', (d) => d.tone === 'gana' ? mid - 10 : mid + 10).attr('y', rowH / 2).attr('dy', '0.35em').attr('text-anchor', (d) => d.tone === 'gana' ? 'end' : 'start').attr('fill', css('--t2')).attr('font-size', W < 480 ? 11 : 12.5).text((d) => ({ switch: 'Se cambiaron a Samsung', apple: 'Pierde contra Apple', telcel: 'Resolvió lo que Telcel no', fuga: 'Compraron en otro lado', omni: 'Tienda y en línea juntas', otro_canal: 'No atienden otras compras', palacio: 'Confusión con Palacio' })[d.id]);
+    const by = Object.fromEntries(D.comp.map((g) => [g.id, g]));
+    $('#comp-read').replaceChildren(
+      el('p', { html: `<b>La competencia casi no aparece:</b> ${D.comp_total} de ${fmt(K.con_texto)} reseñas con texto (${pct(D.comp_total / K.con_texto * 100)}). Son pocas, así que se leen como señales, no como porcentajes.${D.comp_new ? ` Hay ${D.comp_new} menciones más que todavía no se clasifican a mano.` : ''}` }),
+      el('p', { html: `<b>La tienda sí convierte gente de iPhone.</b> ${by.switch.n} reseñas cuentan el cambio, todas de 5★, y casi siempre mencionan el traspaso de datos. Refuerza el territorio “Estrena sin perder nada”.` }),
+      el('p', { html: `<b>En servicio técnico, Apple es la vara.</b> ${by.apple.n} críticas comparan la reparación con Apple y Samsung sale perdiendo.` }),
+      el('p', { html: `<b>La tienda deja ir ventas.</b> En ${by.fuga.n} reseñas el cliente se fue a comprar a Liverpool, Amazon, Mercado Libre o en línea, a veces porque el mismo personal se lo sugirió. Y ${by.otro_canal.n} más no fueron atendidos por haber comprado en otro canal.` }),
+      el('p', { html: `<b>Lo omnicanal funciona cuando se usa.</b> ${by.omni.n} reseñas positivas de gente que recoge su compra en línea o prueba en tienda antes de pedir. Con Telcel pasa algo parecido: ${by.telcel.n} clientes resolvieron en la tienda lo que su operador no pudo.` }));
+    $('#compcards').replaceChildren(...D.comp.slice().sort((a, b) => b.n - a.n).map((g) => {
+      const open = openC.has(g.id); const rows = open ? g.rows : g.rows.slice(0, 1);
+      return el('div', { class: 'panel cc c4' + (open ? ' open' : '') },
+        el('div', { class: 'top' }, el('span', { class: 'tone', style: `background:color-mix(in srgb,var(${toneC[g.tone]}) 18%,transparent);color:var(${toneC[g.tone]})` }, toneT[g.tone]), el('span', { class: 'n' }, String(g.n))),
+        el('h3', {}, g.title), el('p', {}, g.desc),
+        ...rows.map((q) => el('div', { class: 'cq' }, el('p', {}, '“' + q[0] + '”'), el('div', { class: 'src' }, `${'★'.repeat(q[3])} · ${S[q[1]].nombre} · ${q[2]}`))),
+        g.n > 1 ? el('button', { class: 'more2', onclick: () => { open ? openC.delete(g.id) : openC.add(g.id); comp(); } }, open ? 'Ver menos' : `Ver las ${g.n} reseñas`) : null);
+    }));
   }
 
   // ---------- Ops ----------
