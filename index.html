@@ -7,19 +7,19 @@
 <meta name="description" content="Lo que dicen las reseñas de Google Maps sobre las Samsung Stores de México, y cómo convertirlo en campañas entre tienda y digital.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
 <style>
 :root{
-  --ink:#0A0A0F;--s1:#13131A;--s2:#1A1A22;--s3:#22222C;
-  --t1:#FFFFFF;--t2:#B5B5C0;--t3:#888894;--t4:#6B6B78;
-  --accent:#7A96FF;--accent2:#4C6EF5;--deep:#1428A0;
-  --pos:#5DCAA5;--mix:#F0B358;--neg:#FF6B6B;--none:#3A3A46;
-  --glass:rgba(19,19,26,.72);--glass-hi:rgba(255,255,255,.06);
-  --dot:#2A2A36;--shadow:0 20px 60px rgba(0,0,0,.45);
-  --zebra:rgba(255,255,255,.025);
+  --ink:#0A0A0F;--s1:#13131A;--s2:#1A1A22;--s3:#24242E;
+  --t1:#FFFFFF;--t2:#B5B5C0;--t3:#888894;--t4:#5E5E6A;
+  --brand:#1428A0;--accent:#7A96FF;
+  --crit:#FF6B5E;--warn:#F0B358;--good:#5DCAA5;--neutral:#8A8A98;
+  --glass:rgba(19,19,26,.74);--glass-hi:rgba(255,255,255,.06);
+  --dot:#26262F;--shadow:0 18px 50px rgba(0,0,0,.45);--zebra:rgba(255,255,255,.025);
+  --band:rgba(255,255,255,.05);
   --r:16px;--gut:clamp(16px,4vw,56px);
   --f-ui:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --f-dis:"Fraunces",Georgia,serif;
@@ -27,13 +27,13 @@
   color-scheme:dark;
 }
 html.light{
-  --ink:#F5F6F8;--s1:#FFFFFF;--s2:#EEF0F4;--s3:#E4E7EE;
-  --t1:#0A0A0F;--t2:#3F4150;--t3:#6B6E7E;--t4:#8C8FA0;
-  --accent:#1428A0;--accent2:#2F4BD8;--deep:#1428A0;
-  --pos:#14946D;--mix:#C27A10;--neg:#D9423B;--none:#C9CCD6;
-  --glass:rgba(255,255,255,.78);--glass-hi:rgba(10,10,15,.04);
-  --dot:#D9DCE4;--shadow:0 20px 60px rgba(20,30,80,.14);
-  --zebra:rgba(10,10,15,.025);
+  --ink:#F4F5F7;--s1:#FFFFFF;--s2:#EDEFF3;--s3:#E2E5EC;
+  --t1:#0A0A0F;--t2:#3F4150;--t3:#6B6E7E;--t4:#9A9DAC;
+  --accent:#1428A0;
+  --crit:#D63C33;--warn:#B8700A;--good:#11896A;--neutral:#8C8FA0;
+  --glass:rgba(255,255,255,.82);--glass-hi:rgba(10,10,15,.04);
+  --dot:#D8DBE3;--shadow:0 18px 50px rgba(20,30,80,.14);--zebra:rgba(10,10,15,.025);
+  --band:rgba(20,40,160,.06);
   color-scheme:light;
 }
 *{box-sizing:border-box}
@@ -42,195 +42,181 @@ body{margin:0;background:var(--ink);color:var(--t1);font:400 16px/1.5 var(--f-ui
 a{color:inherit}
 button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 .num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-.wrap{padding:0 var(--gut);max-width:1480px;margin:0 auto}
-
-/* top bar */
-.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ink) 82%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.wrap{padding:0 var(--gut);max-width:1440px;margin:0 auto}
+.muted{color:var(--t3)}.small{font-size:14px}
+.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--ink) 84%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
 .top .wrap{display:flex;align-items:center;gap:24px;height:60px}
-.brand{font-weight:700;letter-spacing:-.01em;font-size:17px;white-space:nowrap;text-decoration:none}
+.brand{font-weight:700;font-size:17px;white-space:nowrap;text-decoration:none}
 .brand span{color:var(--t3);font-weight:500}
-.nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav{display:flex;gap:2px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.nav a{padding:7px 12px;border-radius:999px;text-decoration:none;color:var(--t2);font-size:14px;white-space:nowrap}
+.nav a{padding:7px 11px;border-radius:999px;text-decoration:none;color:var(--t2);font-size:14px;white-space:nowrap}
 .nav a:hover{background:var(--s2);color:var(--t1)}
 .theme{width:36px;height:36px;border-radius:999px;background:var(--s2);display:grid;place-items:center;flex:none}
 .theme svg{width:18px;height:18px}
-@media (max-width:820px){.nav{display:none}.theme{margin-left:auto}}
+@media (max-width:900px){.nav{display:none}.theme{margin-left:auto}}
 
 /* hero */
-.hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(32px,6vw,88px) 0 clamp(40px,5vw,72px)}
-.kicker{color:var(--t3);font-size:15px;margin:0 0 20px}
-.kicker b{color:var(--t2);font-weight:500}
-h1{font:500 clamp(40px,5.4vw,80px)/1.02 var(--f-dis);letter-spacing:-.025em;margin:0 0 24px;text-wrap:balance}
-h1 em{font-style:italic;color:var(--accent)}
-.lede{font-size:clamp(17px,1.4vw,20px);color:var(--t2);max-width:34em;margin:0 0 28px}
-.cta{display:flex;gap:10px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--s2);font-weight:600;text-decoration:none;font-size:15px}
-.btn.pri{background:var(--accent);color:#fff}
-.dm{position:relative;aspect-ratio:1.45;min-height:300px}
-.dm .cv{position:absolute;inset:0}
-.dm canvas{position:absolute;inset:0;width:100%;height:100%}
-.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border-radius:20px;box-shadow:var(--shadow)}
-.kcard{position:absolute;left:0;bottom:4%;padding:20px 22px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 28px;width:min(400px,62%)}
-.kcard .v{font:500 30px/1 var(--f-num);letter-spacing:-.03em}
-.kcard .l{color:var(--t3);font-size:13px;line-height:1.3;margin-top:6px}
-.kcard .hd{grid-column:1/-1;font-weight:600;font-size:14px;color:var(--t2)}
-.dm .legend{position:absolute;right:0;top:0;display:flex;gap:14px;font-size:13px;color:var(--t3)}
+.hero{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(24px,4vw,64px);align-items:center;padding:clamp(36px,6vw,84px) 0 clamp(24px,3vw,40px)}
+.kicker{color:var(--t3);font-size:15px;margin:0 0 22px}
+h1{font:400 clamp(40px,5vw,74px)/1.03 var(--f-dis);letter-spacing:-.025em;margin:0 0 24px;text-wrap:balance}
+h1 b{font-weight:500;color:var(--crit)}
+.lede{font-size:clamp(17px,1.35vw,20px);color:var(--t2);max-width:33em;margin:0}
+.dm{position:relative}
+.dm canvas{display:block;width:100%;aspect-ratio:1.42}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--t3);margin-top:10px}
 .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-@media (max-width:980px){.hero{grid-template-columns:1fr}.dm{aspect-ratio:1.3}}
-@media (max-width:560px){.dm{aspect-ratio:auto;min-height:0;display:flex;flex-direction:column}.dm .cv{position:relative;aspect-ratio:1.25;inset:auto}.kcard{position:relative;width:100%;left:auto;bottom:auto;margin-top:-24px}.dm .legend{position:relative;order:3;margin-top:14px;flex-wrap:wrap}}
+.dmnote{font-size:13px;color:var(--t3);margin-top:4px}
+@media (max-width:980px){.hero{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding-bottom:clamp(40px,5vw,72px)}
+.kpi{background:var(--s1);border-radius:var(--r);padding:22px 22px 24px}
+.kpi .v{font:500 clamp(30px,3vw,40px)/1 var(--f-num);letter-spacing:-.04em}
+.kpi .v small{font-size:.5em;color:var(--t3);letter-spacing:0}
+.kpi .l{color:var(--t2);font-size:15px;margin-top:10px;line-height:1.35}
+.kpi .s{color:var(--t3);font-size:13px;margin-top:6px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* sections */
-section.blk{padding:clamp(56px,7vw,112px) 0}
-.sh{max-width:880px;margin-bottom:clamp(28px,4vw,48px)}
-.sh .pre{color:var(--accent);font-weight:600;font-size:15px;margin:0 0 10px}
-h2{font:500 clamp(32px,3.8vw,56px)/1.05 var(--f-dis);letter-spacing:-.02em;margin:0 0 16px;text-wrap:balance}
-.sh p.d{color:var(--t2);font-size:18px;margin:0;max-width:44em}
+section.blk{padding:clamp(56px,7vw,104px) 0}
+.sh{max-width:860px;margin-bottom:clamp(26px,3.5vw,44px)}
+h2{font:400 clamp(30px,3.6vw,52px)/1.06 var(--f-dis);letter-spacing:-.02em;margin:0 0 14px;text-wrap:balance}
+.sh p{color:var(--t2);font-size:18px;margin:0;max-width:44em}
 .card{background:var(--s1);border-radius:var(--r);padding:clamp(20px,2.4vw,32px)}
-h3{font:600 20px/1.25 var(--f-ui);letter-spacing:-.01em;margin:0 0 6px}
-.muted{color:var(--t3)}
-.small{font-size:14px}
+h3{font:600 19px/1.25 var(--f-ui);margin:0 0 6px}
+.alt{background:var(--s1)}
+html.light .alt{background:#E9EBF1}
+.alt .card{background:var(--ink)}
+html.light .alt .card{background:#fff}
+
+/* inflation */
+.g2{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px}
+.g84{grid-template-columns:minmax(0,8fr) minmax(0,4fr)}
+@media (max-width:980px){.g2,.g84{grid-template-columns:1fr}}
+.pairs{display:grid;gap:26px;margin-top:22px}
+.pair .lb{font-weight:600;margin-bottom:10px}
+.prow{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;font-size:14px;margin-bottom:6px}
+.prow .tr{height:12px;border-radius:6px;background:var(--s2)}
+html.light .alt .prow .tr{background:var(--s2)}
+.prow .tr i{display:block;height:100%;border-radius:6px}
+.prow .v{font:500 14px var(--f-num);text-align:right}
+#mon{width:100%;height:260px;display:block}
 
 /* territories */
-.tband{background:var(--s1)}
-html.light .tband{background:#EBEDF3}
-.tidx{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:28px}
-.tidx a{display:block;border-radius:14px;padding:16px 16px 18px;text-decoration:none;color:#fff;min-height:118px;position:relative;transition:transform .2s}
-.tidx a:hover{transform:translateY(-3px)}
-.tidx .n{font-weight:600;font-size:13px;opacity:.8}
-.tidx .t{font:500 19px/1.15 var(--f-dis);margin-top:22px;display:block}
-@media (max-width:900px){.tidx{grid-template-columns:repeat(2,minmax(0,1fr))}.tidx a:last-child{grid-column:1/-1}}
-.c-blue{--c:#1428A0;--c2:#2A44D6}.c-green{--c:#0D6B53;--c2:#14936F}.c-amber{--c:#B4630B;--c2:#DC8418}.c-violet{--c:#4B2FB8;--c2:#6A4DE0}.c-red{--c:#B12E2A;--c2:#D9453E}
-.tidx a{background:linear-gradient(160deg,var(--c2),var(--c))}
-.poster{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border-radius:24px;overflow:hidden;margin-bottom:20px;background:var(--ink)}
-html.light .poster{background:#fff}
-.pblock{background:linear-gradient(165deg,var(--c2),var(--c) 70%);color:#fff;padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:16px;min-height:100%}
-.pill{display:inline-flex;align-self:flex-start;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.16);font-weight:600;font-size:13px}
-.pblock .big{font:500 clamp(72px,9vw,136px)/.9 var(--f-dis);letter-spacing:-.04em;margin-top:auto}
-.pblock .bigl{font-size:18px;line-height:1.35;max-width:22em;opacity:.92}
-.iso{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 6px}
-.iso svg{width:24px;height:32px}
-.isol{font-size:13px;opacity:.8}
-.pbody{padding:clamp(24px,3vw,44px);display:flex;flex-direction:column;gap:22px}
-.pbody h3{font:500 clamp(30px,3vw,44px)/1.05 var(--f-dis);letter-spacing:-.02em;margin:0}
-.ins{font-size:19px;color:var(--t2);margin:0;max-width:36em}
-.quotes{display:grid;gap:10px}
-.q{background:var(--s2);border-radius:14px;padding:14px 18px 14px 44px;position:relative;font-size:16px;color:var(--t1)}
-.q::before{content:"“";position:absolute;left:14px;top:4px;font:500 40px/1 var(--f-dis);color:var(--c2)}
-.idea{border-radius:16px;padding:18px 22px;background:color-mix(in srgb,var(--c2) 16%,transparent)}
-.idea .k{font-size:13px;font-weight:600;color:var(--c);margin-bottom:4px}
-html:not(.light) .idea .k{color:color-mix(in srgb,var(--c2) 50%,#fff)}
-.idea .v{font:500 clamp(22px,2.2vw,30px)/1.15 var(--f-dis);letter-spacing:-.01em}
-.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.step{background:var(--s2);border-radius:14px;padding:14px 16px 16px;position:relative}
-.step .w{font-weight:700;font-size:13px;color:var(--t3);display:flex;align-items:center;gap:8px}
-.step .w i{width:22px;height:22px;border-radius:50%;background:var(--c2);color:#fff;font:600 12px/22px var(--f-num);text-align:center;font-style:normal}
-.step p{margin:8px 0 0;font-size:15px;line-height:1.4}
+.lead{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border-radius:24px;overflow:hidden;background:var(--s1);margin-bottom:16px}
+.lead .blue{background:var(--brand);color:#fff;padding:clamp(26px,3vw,44px);display:flex;flex-direction:column;gap:18px}
+.tag{display:inline-flex;align-self:flex-start;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-weight:600;font-size:13px}
+.big{font:400 clamp(70px,8vw,120px)/.9 var(--f-dis);letter-spacing:-.04em}
+.bigl{font-size:18px;line-height:1.4;opacity:.9;max-width:24em}
+.cmp{display:grid;gap:14px;margin-top:auto}
+.cmp .row{display:grid;grid-template-columns:110px 1fr;gap:12px;align-items:center;font-size:14px}
+.ppl{display:grid;grid-template-columns:repeat(20,1fr);gap:3px 4px;max-width:300px}
+.ppl svg{width:100%;height:auto;aspect-ratio:26/34}
+.tbody{padding:clamp(26px,3vw,44px);display:flex;flex-direction:column;gap:22px}
+.tbody h3,.tcard h3{font:400 clamp(28px,2.8vw,40px)/1.06 var(--f-dis);letter-spacing:-.02em;margin:0}
+.ins{font-size:18px;color:var(--t2);margin:0;max-width:38em}
+.mets{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.met{background:var(--s2);border-radius:12px;padding:12px 14px}
+.met .v{font:500 20px/1.1 var(--f-num)}
+.met .l{font-size:12.5px;color:var(--t3);margin-top:4px;line-height:1.3}
+.quotes{display:grid;gap:8px}
+.q{background:var(--s2);border-radius:14px;padding:14px 18px}
+.q p{margin:0 0 6px;font:400 17px/1.4 var(--f-dis)}
+.q .src{font-size:12.5px;color:var(--t3)}
+.idea .k{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:4px}
+.idea .v{font:400 clamp(22px,2.1vw,30px)/1.18 var(--f-dis);font-style:italic}
+.path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.step{background:var(--s2);border-radius:12px;padding:12px 14px 14px}
+.step .w{font-weight:700;font-size:13px;color:var(--accent)}
+.step p{margin:6px 0 0;font-size:14.5px;line-height:1.4}
 .start{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.start .lb{font-size:14px;color:var(--t3);margin-right:4px}
+.start .lb{font-size:14px;color:var(--t3);margin-right:2px}
 .chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:var(--s2);font-size:14px;font-weight:500}
 .chip:hover{background:var(--s3)}
 .chip .num{color:var(--t3);font-size:12px}
-@media (max-width:980px){.poster{grid-template-columns:1fr}.pblock .big{margin-top:24px}}
-@media (max-width:620px){.path{grid-template-columns:1fr}}
+.tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.tcard{background:var(--s1);border-radius:24px;padding:clamp(22px,2.4vw,32px);display:flex;flex-direction:column;gap:18px}
+.tcard .hn{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.tcard .hn .n{font:400 56px/1 var(--f-dis);letter-spacing:-.03em;color:var(--accent)}
+.tcard .hn .nl{font-size:15px;color:var(--t2);flex:1 1 160px}
+.tcard .mets{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tcard .path{grid-template-columns:1fr}
+.tcard .ins{font-size:16px}
+@media (max-width:1100px){.tgrid{grid-template-columns:1fr}.tcard .mets{grid-template-columns:repeat(4,minmax(0,1fr))}.tcard .path{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:980px){.lead{grid-template-columns:1fr}}
+@media (max-width:640px){.mets,.tcard .mets{grid-template-columns:repeat(2,minmax(0,1fr))}.path,.tcard .path{grid-template-columns:1fr}}
 
-/* map explorer */
-.mapx{position:relative;height:min(86vh,860px);min-height:560px;border-radius:24px;overflow:hidden;background:var(--s1)}
+/* drivers */
+#drv{width:100%;display:block}
+.chart-note{font-size:13px;color:var(--t3);margin-top:12px}
+
+/* map */
+.mapx{position:relative;height:min(86vh,840px);min-height:560px;border-radius:24px;overflow:hidden;background:var(--s1)}
 #map{position:absolute;inset:0}
+.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border-radius:18px;box-shadow:var(--shadow)}
 .panel{position:absolute;left:14px;top:14px;bottom:14px;width:min(380px,calc(100% - 28px));display:flex;flex-direction:column;overflow:hidden;z-index:3}
 .pscroll{overflow-y:auto;padding:18px 20px 22px;flex:1;scrollbar-width:thin}
 .search{display:flex;align-items:center;gap:10px;background:var(--glass-hi);border-radius:12px;padding:10px 12px;margin:16px 20px 0}
 .search input{all:unset;flex:1;font-size:15px;color:var(--t1)}
 .search svg{width:16px;height:16px;color:var(--t3);flex:none}
-.cities{position:absolute;top:14px;left:408px;right:70px;display:flex;gap:8px;overflow-x:auto;z-index:2;scrollbar-width:none;padding:0 0 30px}
+.cities{position:absolute;top:14px;left:408px;right:70px;display:flex;gap:8px;overflow-x:auto;z-index:2;scrollbar-width:none;padding:0 0 24px}
 .cities::-webkit-scrollbar{display:none}
-.cities button{box-shadow:0 4px 14px rgba(0,0,0,.18);padding:9px 14px;border-radius:999px;font-size:14px;font-weight:600;white-space:nowrap}
-.cities button.on{background:var(--accent);color:#fff}
-.cities button.on .muted{color:rgba(255,255,255,.75)}
+.cities button{padding:9px 14px;border-radius:999px;font-size:14px;font-weight:600;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.16)}
+.cities button.on{background:var(--brand);color:#fff}
+.cities button.on .muted{color:rgba(255,255,255,.7)}
 .mctl{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:8px;z-index:2}
 .mctl button{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:700;font-size:13px}
 .mctl svg{width:18px;height:18px}
+.mlegend{position:absolute;right:14px;bottom:30px;z-index:2;padding:10px 14px;font-size:12.5px;display:grid;gap:4px;color:var(--t2)}
 .slist{list-style:none;margin:10px 0 0;padding:0}
-.slist li button{width:100%;display:grid;grid-template-columns:1fr auto;gap:2px 12px;text-align:left;padding:10px 10px;border-radius:12px}
+.slist li button{width:100%;display:grid;grid-template-columns:1fr auto;gap:2px 12px;text-align:left;padding:10px;border-radius:12px}
 .slist li button:hover,.slist li button:focus-visible{background:var(--glass-hi);outline:none}
 .slist .nm{font-weight:600;font-size:15px}
 .slist .es{color:var(--t3);font-size:13px}
 .slist .sb{grid-row:1/3;grid-column:2;align-self:center;display:flex;align-items:center;gap:8px}
-.mini{width:56px;height:6px;border-radius:3px;display:flex;overflow:hidden;background:var(--none)}
-.mini i{display:block;height:100%}
-.ptitle{font:500 30px/1.05 var(--f-dis);letter-spacing:-.02em;margin:12px 0 6px}
+.flag{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--glass-hi);white-space:nowrap}
+.ptitle{font:400 30px/1.05 var(--f-dis);letter-spacing:-.02em;margin:12px 0 6px}
 .back{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--t2);padding:6px 10px 6px 6px;border-radius:999px;background:var(--glass-hi)}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:18px 0}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:16px 0 4px}
 .stat{background:var(--glass-hi);border-radius:12px;padding:10px 12px}
-.stat .v{font:500 20px/1.1 var(--f-num)}
+.stat .v{font:500 19px/1.1 var(--f-num)}
 .stat .l{font-size:12px;color:var(--t3);margin-top:3px;line-height:1.25}
-.sbar{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px;margin:8px 0}
-.sbar i{display:block;height:100%;border-radius:3px}
-.slg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--t2)}
-.ph{font-weight:700;font-size:14px;margin:22px 0 8px;color:var(--t2)}
+.ph{font-weight:700;font-size:14px;margin:20px 0 8px;color:var(--t2)}
+.pp{font-size:14px;color:var(--t2);margin:10px 0 0;line-height:1.45}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
-.tag{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--glass-hi)}
-.tag b{font-family:var(--f-num);font-weight:500;color:var(--t3);margin-left:4px}
+.tg{font-size:13px;padding:5px 10px;border-radius:999px;background:var(--glass-hi)}
+.tg b{font-family:var(--f-num);font-weight:500;color:var(--t3);margin-left:4px}
 .rv{background:var(--glass-hi);border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:14px;line-height:1.45}
-.rv .m{font-size:12px;color:var(--t3);margin-bottom:4px;display:flex;gap:8px;align-items:center}
+.rv .m{font-size:12px;color:var(--t3);margin-bottom:4px;display:flex;gap:8px}
 .ext{display:inline-flex;margin-top:14px;font-weight:600;font-size:14px;color:var(--accent);text-decoration:none}
-.maplibregl-ctrl-attrib{font-size:11px}
 .maplibregl-popup-content{background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);color:var(--t1);border-radius:12px;padding:10px 14px;font:500 14px var(--f-ui);box-shadow:var(--shadow)}
 .maplibregl-popup-tip{display:none}
 .maplibregl-popup-content .muted{font-size:12px}
 .mapnote{position:absolute;left:50%;transform:translateX(-50%);bottom:16px;z-index:2;font-size:13px;padding:8px 14px;border-radius:999px;color:var(--t2);white-space:nowrap}
 @media (max-width:820px){
-  .mapx{height:auto;min-height:0;border-radius:18px;display:flex;flex-direction:column;overflow:visible;background:none}
+  .mapx{height:auto;min-height:0;display:flex;flex-direction:column;overflow:visible;background:none}
   #map{position:relative;height:62vh;min-height:420px;border-radius:18px;overflow:hidden}
-  .panel{position:relative;left:auto;top:auto;bottom:auto;width:auto;margin:-28px 10px 0;max-height:70vh;border-radius:20px}
+  .panel{position:relative;left:auto;top:auto;bottom:auto;width:auto;margin:-28px 10px 0;max-height:70vh}
   .cities{left:14px;right:70px}
+  .mlegend{bottom:auto;top:200px}
   .mapnote{top:64px;bottom:auto;white-space:normal;width:max-content;max-width:80%}
 }
 
-/* sentiment */
-.g2{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:20px}
-@media (max-width:980px){.g2{grid-template-columns:1fr}}
-.units{display:grid;grid-template-columns:repeat(20,1fr);gap:5px;margin:22px 0 18px;max-width:520px}
-.units i{aspect-ratio:1;border-radius:4px;display:block}
-.bigline{font:500 clamp(28px,3vw,40px)/1.1 var(--f-dis);letter-spacing:-.02em;margin:0 0 8px}
-.rank{display:grid;grid-template-columns:minmax(110px,200px) 1fr 44px;gap:7px 14px;align-items:center;font-size:14px}
-.rank .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
-.rank .nm:hover{color:var(--accent)}
-.rank .bar{display:flex;height:14px;border-radius:4px;overflow:hidden;background:var(--s2)}
-.rank .bar i{height:100%;display:block}
-.rank .v{font:500 13px var(--f-num);text-align:right}
-.seg{display:inline-flex;background:var(--s2);border-radius:999px;padding:4px;gap:2px;margin-bottom:18px}
-.seg button{padding:7px 14px;border-radius:999px;font-size:14px;font-weight:600;color:var(--t2)}
-.seg button.on{background:var(--s3);color:var(--t1)}
-html.light .seg button.on{background:#fff;box-shadow:0 2px 8px rgba(20,30,80,.1)}
-
-/* devices */
-.dgrid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:20px}
-@media (max-width:980px){.dgrid{grid-template-columns:1fr}}
-#bubbles{width:100%;aspect-ratio:1.25;position:relative}
-#bubbles svg{width:100%;height:100%;overflow:visible}
-.dlist{display:grid;gap:8px;align-content:start}
-.drow{display:grid;grid-template-columns:1fr auto;gap:4px 12px;background:var(--s1);border-radius:12px;padding:12px 16px}
-.drow .nm{font-weight:600}
-.drow .n{font:500 14px var(--f-num);color:var(--t2)}
-.drow .sbar{grid-column:1/-1;height:8px;margin:2px 0 0}
-.tip{position:fixed;pointer-events:none;z-index:80;padding:10px 14px;font-size:14px;max-width:280px;opacity:0;transition:opacity .12s;border-radius:12px}
+/* funnel + devices */
+#fun,#forest{width:100%;display:block}
+.flist{display:grid;gap:8px;align-content:start}
+.fl{display:grid;grid-template-columns:1fr auto;gap:2px 12px;background:var(--s1);border-radius:12px;padding:12px 16px;text-align:left;width:100%}
+.fl:hover{background:var(--s2)}
+.fl .nm{font-weight:600}
+.fl .v{font:500 14px var(--f-num);color:var(--crit)}
+.fl .d{grid-column:1/-1;font-size:13px;color:var(--t3)}
+.tip{position:fixed;pointer-events:none;z-index:80;padding:10px 14px;font-size:14px;max-width:290px;opacity:0;transition:opacity .12s}
 .tip b{display:block;font-size:15px}
 
-/* tiles */
-.tiles{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
-.tile{border-radius:22px;padding:clamp(22px,2.6vw,36px);color:#fff;position:relative;overflow:hidden}
-.tile h3{font:500 clamp(24px,2.4vw,34px)/1.1 var(--f-dis);letter-spacing:-.02em;margin:0 0 10px;max-width:20em}
-.tile p{margin:0;opacity:.85;max-width:36em}
-.t-a{grid-column:span 7;background:#1428A0}.t-b{grid-column:span 5;background:#B12E2A}.t-c{grid-column:span 5;background:#0D6B53}.t-d{grid-column:span 7;background:#1D1D27}
-html.light .t-d{background:#0A0A0F}
-@media (max-width:980px){.tile{grid-column:1/-1!important}}
-.tl svg{width:100%;height:230px;display:block;margin-top:18px;overflow:visible}
-.blist{display:grid;gap:12px;margin-top:22px}
-.bl{display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:15px}
-.bl .track{grid-column:1/-1;height:8px;border-radius:4px;background:rgba(255,255,255,.14);display:flex;gap:4px}
-.bl .track i{display:block;height:100%;border-radius:4px;background:#fff}
-.bl .n{font:500 14px var(--f-num);opacity:.85}
+/* ops */
+.ops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.op{background:var(--s1);border-radius:var(--r);padding:clamp(20px,2.4vw,30px)}
+.op .v{font:500 44px/1 var(--f-num);letter-spacing:-.04em}
+.op p{color:var(--t2);margin:12px 0 0}
+@media (max-width:900px){.ops{grid-template-columns:1fr}}
 
 /* table */
 .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
@@ -242,37 +228,38 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px}
 thead th{background:var(--s2);text-align:left;font-weight:600;color:var(--t2);padding:0;white-space:nowrap}
 thead th:first-child{border-radius:10px 0 0 10px}thead th:last-child{border-radius:0 10px 10px 0}
 thead th button{padding:11px 14px;width:100%;text-align:inherit;font-weight:600}
-thead th:not(:has(button)){padding:11px 14px}
+thead th.pl{padding:11px 14px}
 th.r,td.r{text-align:right}
-tbody td{padding:11px 14px;vertical-align:top}
+tbody td{padding:11px 14px;vertical-align:middle}
 tbody tr:nth-child(even) td{background:var(--zebra)}
 tbody tr.click{cursor:pointer}
 tbody tr.click:hover td{background:var(--s2)}
-td .sbar{width:120px;height:8px;margin:6px 0 0}
-.stars{color:var(--neg);letter-spacing:1px;white-space:nowrap}
-.stars.good{color:var(--pos)}
+.stars{color:var(--crit);letter-spacing:1px;white-space:nowrap}
+.stars.good{color:var(--good)}
 td.txt{max-width:620px;min-width:240px}
 .sdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.spark{display:block}
 @media (max-width:760px){.hs{display:none}}
 .more{text-align:center;margin-top:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:999px;background:var(--s2);font-weight:600;text-decoration:none;font-size:15px}
 
-footer{padding:56px 0 80px;color:var(--t3);font-size:14px}
-footer .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
-footer h4{color:var(--t2);font-size:15px;margin:0 0 8px}
-footer p{margin:0 0 8px}
-@media (max-width:820px){footer .cols{grid-template-columns:1fr}}
+footer{padding:24px 0 80px;color:var(--t3);font-size:14px}
+.method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.method h4{color:var(--t1);font-size:15px;margin:0 0 8px}
+.method p{margin:0 0 10px;line-height:1.55}
+@media (max-width:900px){.method{grid-template-columns:1fr}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="person" viewBox="0 0 26 34"><circle cx="13" cy="6.5" r="5.5"/><path d="M3 34V21c0-5 4-8.5 10-8.5S23 16 23 21v13z"/></symbol>
+  <symbol id="pp" viewBox="0 0 26 34"><circle cx="13" cy="6.5" r="5.5"/><path d="M3 34V21c0-5 4-8.5 10-8.5S23 16 23 21v13z"/></symbol>
 </svg>
 
 <header class="top"><div class="wrap">
   <a class="brand" href="#">Samsung Store Pulse <span>· México</span></a>
   <nav class="nav" aria-label="Secciones">
-    <a href="#territorios">Territorios</a><a href="#mapa">Mapa</a><a href="#sentimiento">Sentimiento</a><a href="#dispositivos">Dispositivos</a><a href="#conversacion">Conversación</a><a href="#tiendas">Tiendas</a><a href="#resenas">Reseñas</a>
+    <a href="#lectura">Cómo leer Maps</a><a href="#territorios">Territorios</a><a href="#temas">Temas</a><a href="#mapa">Mapa</a><a href="#tiendas-fuera">Tiendas</a><a href="#dispositivos">Dispositivos</a><a href="#operacion">Operación</a><a href="#resenas">Reseñas</a>
   </nav>
   <button class="theme" id="theme" aria-label="Cambiar entre tema claro y oscuro"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
 </div></header>
@@ -282,71 +269,90 @@ footer p{margin:0 0 8px}
   <section class="hero">
     <div>
       <p class="kicker" id="kicker"></p>
-      <h1>La gente sale de la tienda hablando de <em>una persona</em>, no de un teléfono.</h1>
+      <h1 id="h1"></h1>
       <p class="lede" id="lede"></p>
-      <div class="cta"><a class="btn pri" href="#territorios">Ver los cinco territorios</a><a class="btn" href="#mapa">Explorar el mapa</a></div>
     </div>
-    <div class="dm" id="dm">
-      <div class="cv"><canvas id="dots" aria-label="Mapa de México con las tiendas coloreadas por sentimiento" role="img"></canvas></div>
-      <div class="legend"><span><i class="sw" style="background:var(--pos)"></i>Muy positiva</span><span><i class="sw" style="background:var(--mix)"></i>Con fricción</span><span><i class="sw" style="background:var(--neg)"></i>Crítica</span></div>
-      <div class="kcard glass" id="kcard"></div>
+    <div class="dm">
+      <canvas id="dots" role="img" aria-label="Mapa de México con las tiendas según su nivel de críticas recientes"></canvas>
+      <div class="legend"><span><i class="sw" style="background:var(--crit)"></i>Más críticas que el promedio</span><span><i class="sw" style="background:var(--t2)"></i>Dentro de lo normal</span><span><i class="sw" style="background:var(--good)"></i>Menos críticas</span></div>
+      <div class="dmnote">Críticas de los últimos 6 meses comparadas con el promedio nacional, ajustadas por el número de reseñas de cada tienda.</div>
     </div>
   </section>
+  <div class="kpis" id="kpis"></div>
 </div>
 
-<section class="blk tband" id="territorios">
+<section class="blk alt" id="lectura">
   <div class="wrap">
     <div class="sh">
-      <p class="pre">De la conversación a la campaña</p>
-      <h2>Cinco territorios entre tienda y digital</h2>
-      <p class="d">Cada territorio sale de lo que la gente escribe. Trae el dato que lo sostiene, las palabras textuales de los clientes, una idea y su recorrido: dónde empieza, a dónde lleva y cómo regresa.</p>
+      <h2 id="lec-h"></h2>
+      <p id="lec-p"></p>
     </div>
-    <div class="tidx" id="tidx"></div>
-    <div id="posters"></div>
+    <div class="g2">
+      <div class="card">
+        <h3>Quién escribe cambia el resultado</h3>
+        <p class="muted small" style="margin:0">Local Guides contra el resto de los usuarios.</p>
+        <div class="pairs" id="pairs"></div>
+      </div>
+      <div class="card">
+        <h3>Reseñas por mes</h3>
+        <p class="muted small" style="margin:0" id="mon-sub"></p>
+        <svg id="mon" role="img" aria-label="Reseñas por mes en los últimos 12 meses"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="territorios">
+  <div class="wrap">
+    <div class="sh">
+      <h2>Cuatro territorios para campaña, ordenados por cuánta gente los menciona</h2>
+      <p>Cada uno trae las mismas cuatro métricas para poder compararlos, las palabras textuales de los clientes, una idea y su recorrido entre tienda y digital.</p>
+    </div>
+    <div id="lead"></div>
+    <div class="tgrid" id="tgrid"></div>
+  </div>
+</section>
+
+<section class="blk alt" id="temas">
+  <div class="wrap">
+    <div class="sh">
+      <h2 id="drv-h"></h2>
+      <p>Cada punto es un tema. A la derecha, los que más se mencionan; arriba, los que más aumentan la probabilidad de que la reseña sea una crítica. El tamaño indica cuántas críticas lo mencionan.</p>
+    </div>
+    <div class="card"><svg id="drv" role="img" aria-label="Temas por frecuencia y riesgo de crítica"></svg><p class="chart-note">Escalas logarítmicas. “Veces más probable” compara las reseñas que mencionan el tema contra las que no. Las barras muestran el rango con 95% de confianza.</p></div>
   </div>
 </section>
 
 <section class="blk" id="mapa">
   <div class="wrap">
     <div class="sh">
-      <p class="pre">Mapa de tiendas</p>
-      <h2>Cada tienda, con lo que dicen de ella</h2>
-      <p class="d">Arrastra para moverte, pellizca o usa la rueda para acercarte, y gira o inclina con dos dedos o con clic derecho. Al elegir una tienda, el mapa vuela hasta ella en 3D.</p>
+      <h2>Cada tienda en el mapa</h2>
+      <p>Se mueve, acerca, gira e inclina como cualquier mapa del teléfono: arrastra, pellizca o usa dos dedos. Al elegir una tienda, el mapa vuela hasta ella en 3D.</p>
     </div>
     <div class="mapx">
       <div id="map" aria-label="Mapa interactivo de tiendas"></div>
       <div class="cities" id="cities"></div>
       <div class="mctl">
         <button class="glass" id="b3d" aria-label="Cambiar entre 2D y 3D">3D</button>
-        <button class="glass" id="compass" aria-label="Orientar al norte"><svg viewBox="0 0 24 24"><path d="M12 2l4 10h-8z" fill="var(--neg)"/><path d="M12 22l-4-10h8z" fill="var(--t3)"/></svg></button>
+        <button class="glass" id="compass" aria-label="Orientar al norte"><svg viewBox="0 0 24 24"><path d="M12 2l4 10h-8z" fill="var(--crit)"/><path d="M12 22l-4-10h8z" fill="var(--t3)"/></svg></button>
         <button class="glass" id="bhome" aria-label="Ver todo México"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
       </div>
+      <div class="mlegend glass"><span><i class="sw" style="background:var(--crit)"></i>Más críticas que el promedio</span><span><i class="sw" style="background:var(--t2)"></i>Normal</span><span><i class="sw" style="background:var(--good)"></i>Menos críticas</span><span><i class="sw" style="background:var(--t4)"></i>Cerrada o sin ficha</span></div>
       <aside class="panel glass" id="panel"></aside>
       <div class="mapnote glass" id="mapnote" hidden></div>
     </div>
   </div>
 </section>
 
-<section class="blk" id="sentimiento">
+<section class="blk alt" id="tiendas-fuera">
   <div class="wrap">
     <div class="sh">
-      <p class="pre">Sentimiento</p>
-      <h2>Casi todo es positivo. Lo útil está en dónde no lo es.</h2>
-      <p class="d">Cada reseña con texto se clasifica por sus estrellas y por su lenguaje. Una de 5★ que dice “excelente, pero tardaron mucho” cuenta como reseña con fricción, no como positiva.</p>
+      <h2 id="fun-h"></h2>
+      <p id="fun-p"></p>
     </div>
-    <div class="g2">
-      <div class="card">
-        <p class="bigline" id="sent-line"></p>
-        <p class="muted small" id="sent-sub" style="margin:0"></p>
-        <div class="units" id="units" role="img"></div>
-        <div class="slg"><span><i class="sw" style="background:var(--pos)"></i>Positiva</span><span><i class="sw" style="background:var(--mix)"></i>Con fricción</span><span><i class="sw" style="background:var(--neg)"></i>Negativa</span></div>
-        <p class="muted small" style="margin:18px 0 0">Cada cuadro es 1% de las reseñas con texto.</p>
-      </div>
-      <div class="card">
-        <div class="seg" id="seg-sent"><button data-v="neg" class="on">Más críticas</button><button data-v="pos">Más queridas</button><button data-v="all">Todas</button></div>
-        <div class="rank" id="rank"></div>
-        <p class="muted small" style="margin:16px 0 0">Barra: % de reseñas negativas y con fricción. El número es el sentimiento neto (positivas menos negativas, de −100 a 100). Clic en una tienda para verla en el mapa.</p>
-      </div>
+    <div class="g2 g84">
+      <div class="card"><svg id="fun" role="img" aria-label="Gráfica de embudo: % de críticas contra número de reseñas por tienda"></svg><p class="chart-note">Eje horizontal: reseñas con texto de los últimos 6 meses. La franja marca el rango esperado si la tienda fuera igual al promedio; fuera de ella, la diferencia no es casualidad.</p></div>
+      <div class="flist" id="flist"></div>
     </div>
   </div>
 </section>
@@ -354,72 +360,63 @@ footer p{margin:0 0 8px}
 <section class="blk" id="dispositivos">
   <div class="wrap">
     <div class="sh">
-      <p class="pre">Dispositivos</p>
       <h2 id="dev-h"></h2>
-      <p class="d" id="dev-d"></p>
+      <p id="dev-p"></p>
     </div>
-    <div class="dgrid">
-      <div class="card"><div id="bubbles"></div><div class="slg" style="margin-top:10px"><span>Tamaño: menciones</span><span><i class="sw" style="background:var(--pos)"></i>Casi siempre bien</span><span><i class="sw" style="background:var(--neg)"></i>Muchas quejas</span><span class="muted">Clic para leer las reseñas</span></div></div>
-      <div class="dlist" id="dlist"></div>
-    </div>
+    <div class="card"><svg id="forest" role="img" aria-label="Probabilidad de crítica por dispositivo mencionado"></svg><p class="chart-note">Punto: cuántas veces más probable es una crítica cuando se menciona el dispositivo, contra el resto. Barra: rango con 95% de confianza; entre más ancha, menos reseñas hay para medirlo.</p></div>
   </div>
 </section>
 
-<section class="blk" id="conversacion">
+<section class="blk alt" id="operacion">
   <div class="wrap">
     <div class="sh">
-      <p class="pre">La conversación</p>
-      <h2>Qué duele, qué se agradece y qué está cambiando</h2>
+      <h2>Pendientes de operación</h2>
+      <p>No son ideas de campaña, pero cualquier campaña que mande gente a Maps se va a topar con esto.</p>
     </div>
-    <div class="tiles">
-      <article class="tile t-a tl"><h3 id="tl-h"></h3><p id="tl-p"></p><svg id="tl"></svg></article>
-      <article class="tile t-b"><h3>Lo que más duele</h3><p>Motivo principal en las reseñas de 1 a 3 estrellas.</p><div class="blist" id="dol"></div></article>
-      <article class="tile t-c"><h3>Lo que más se agradece</h3><p>Más allá del “buena atención”, en reseñas de 5 estrellas.</p><div class="blist" id="mot"></div></article>
-      <article class="tile t-d"><h3>De qué se habla</h3><p>Atención es lo que más se elogia y también lo que más se critica.</p><div class="blist" id="tem"></div></article>
-    </div>
+    <div class="ops" id="ops"></div>
   </div>
 </section>
 
-<section class="blk" id="tiendas">
+<section class="blk" id="tabla">
   <div class="wrap">
-    <div class="sh"><p class="pre">Por tienda</p><h2>Todas las tiendas</h2><p class="d">Ordena por cualquier columna. Clic en una fila para verla en el mapa.</p></div>
+    <div class="sh"><h2>Las 64 tiendas</h2><p>Ordena por cualquier columna. Clic en una fila para verla en el mapa.</p></div>
     <div class="card">
       <div class="tools"><input class="inp" id="q-store" type="search" placeholder="Buscar tienda o estado" aria-label="Buscar tienda"><span class="count" id="c-store"></span></div>
       <div class="tw"><table id="t-store"><thead><tr>
         <th><button data-k="nombre">Tienda</button></th>
-        <th class="hs"><button data-k="estado">Estado</button></th>
         <th class="r"><button data-k="calif">Maps</button></th>
-        <th><button data-k="net">Sentimiento</button></th>
+        <th class="r"><button data-k="eb6">Críticas 6 meses</button></th>
+        <th class="hs pl">Últimos 12 meses</th>
         <th class="r hs"><button data-k="asesor">Nombra asesor</button></th>
         <th class="hs"><button data-k="devtop">Más mencionado</button></th>
-        <th class="hs"><button data-k="dolor">Tema de las críticas</button></th>
+        <th class="hs"><button data-k="dolor">Tema de las críticas, aparte del trato</button></th>
       </tr></thead><tbody></tbody></table></div>
     </div>
   </div>
 </section>
 
-<section class="blk" id="resenas">
+<section class="blk alt" id="resenas">
   <div class="wrap">
-    <div class="sh"><p class="pre">Las palabras de los clientes</p><h2>Explorador de reseñas</h2><p class="d">Las últimas 300 reseñas de cada tienda, sin nombres de autor.</p></div>
+    <div class="sh"><h2>Explorador de reseñas</h2><p>Las últimas 300 reseñas de cada tienda, tal como se escribieron y sin nombres de autor.</p></div>
     <div class="card">
       <div class="tools">
         <input class="inp" id="q-rev" type="search" placeholder="Buscar palabra" aria-label="Buscar en reseñas" style="flex:1 1 220px">
         <select class="inp" id="f-store" aria-label="Tienda"></select>
-        <select class="inp" id="f-sent" aria-label="Sentimiento"><option value="">Todo sentimiento</option><option value="0">Positivas</option><option value="1">Con fricción</option><option value="2">Negativas</option></select>
+        <select class="inp" id="f-sent" aria-label="Sentimiento"><option value="">Todo sentimiento</option><option value="0">Positivas</option><option value="1">Con fricción</option><option value="2">Críticas</option></select>
         <select class="inp" id="f-dev" aria-label="Dispositivo"></select>
         <select class="inp" id="f-topic" aria-label="Tema"></select>
+        <select class="inp" id="f-lg" aria-label="Autor"><option value="">Todos los autores</option><option value="1">Solo Local Guides</option></select>
         <span class="count" id="c-rev"></span>
       </div>
-      <div class="tw"><table id="t-rev"><thead><tr><th>Fecha</th><th>Tienda</th><th>Estrellas</th><th>Reseña</th><th class="hs">Dispositivo y tema</th></tr></thead><tbody></tbody></table></div>
+      <div class="tw"><table id="t-rev"><thead><tr><th class="pl">Fecha</th><th class="pl">Tienda</th><th class="pl">Estrellas</th><th class="pl">Reseña</th><th class="hs pl">Dispositivo y tema</th></tr></thead><tbody></tbody></table></div>
       <div class="more"><button class="btn" id="more-rev">Ver más</button></div>
     </div>
   </div>
 </section>
 
-<footer><div class="wrap cols">
-  <div><h4>Fuente</h4><p id="f-src"></p></div>
-  <div><h4>Método</h4><p>Sentimiento: estrellas más léxico en español. Temas y dispositivos: diccionarios de palabras clave revisados a mano. Los conteos de dispositivos son pequeños: solo una parte de las reseñas nombra un equipo.</p></div>
-  <div><h4>Mapa</h4><p>MapLibre GL con mapas de OpenFreeMap y datos de OpenStreetMap. Sin costo y sin llaves.</p></div>
+<footer id="metodo"><div class="wrap">
+  <h2 style="font-size:32px;margin:40px 0 24px">Método</h2>
+  <div class="method" id="method"></div>
 </div></footer>
 </main>
 <div class="tip glass" id="tip"></div>
@@ -427,121 +424,213 @@ footer p{margin:0 0 8px}
 <script>
 (async function () {
   const $ = (s, r = document) => r.querySelector(s);
-  const el = (t, a = {}, ...k) => { const e = document.createElement(t); for (const [x, v] of Object.entries(a)) { if (x.startsWith('on')) e.addEventListener(x.slice(2), v); else if (x === 'html') e.innerHTML = v; else e.setAttribute(x, v); } e.append(...k.flat().filter((c) => c != null)); return e; };
+  const el = (t, a = {}, ...k) => { const e = document.createElement(t); for (const [x, v] of Object.entries(a)) { if (x.startsWith('on')) e.addEventListener(x.slice(2), v); else if (x === 'html') e.innerHTML = v; else e.setAttribute(x, v); } e.append(...k.flat().filter((c) => c != null && c !== false)); return e; };
   const L = d3.formatLocale({ decimal: '.', thousands: ',', grouping: [3], currency: ['$', ''] });
   const fmt = L.format(','), f1 = L.format('.1f'), f0 = L.format('.0f');
-  const pct = (v) => (v < 10 && Math.round(v) !== v ? f1(v) : f0(v)) + '%';
+  const pct = (v) => (v < 10 && Math.abs(v - Math.round(v)) > 0.05 ? f1(v) : f0(v)) + '%';
+  const xx = (v) => (v < 10 ? f1(v) : f0(v)) + '×';
   const strip = (s) => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-
   const root = document.documentElement;
   let pref = null; try { pref = localStorage.getItem('ssp-theme'); } catch (e) {}
   if (pref === 'light' || (!pref && matchMedia('(prefers-color-scheme: light)').matches)) root.classList.add('light');
   const isLight = () => root.classList.contains('light');
 
   const [D, MX] = await Promise.all([fetch('data.json').then((r) => r.json()), fetch('mexico.json').then((r) => r.json())]);
-  const S = D.stores, R = D.reviews, K = D.kpis, TOP = D.temas, TK = D.temas_k, DEVK = D.devk;
+  const S = D.stores, R = D.reviews, K = D.kpis, TOP = D.temas, TK = D.temas_k, DEVK = D.devk, TM = D.tm, V = D.val;
   S.forEach((s, i) => { s.i = i; });
   const act = S.filter((s) => s.estatus === 'activa');
-  const sentCol = () => [css('--pos'), css('--mix'), css('--neg')];
-  const netColor = (net) => { if (net == null) return css('--t4'); const [p, m, n] = sentCol(); return net >= 85 ? p : net >= 60 ? m : n; };
   for (const s of S) {
-    const top = Object.entries(s.temas_neg || {}).sort((a, b) => b[1] - a[1]).filter((d) => d[1] > 0);
+    const top = Object.entries(s.temas_neg || {}).sort((a, b) => b[1] - a[1]).filter((d) => d[1] > 0 && d[0] !== 'atencion');
     s.dolor = top.length ? TOP[TK.indexOf(top[0][0])] : '';
     s.devtop = s.dev && s.dev.length ? s.dev[0][0] : '';
+    s.fk = s.estatus !== 'activa' ? 'off' : (s.flag === 'alto' || s.flag === 'alto?') ? 'hi' : s.flag === 'bajo' ? 'lo' : 'ok';
   }
-  const avgStars = d3.mean(R.filter((r) => r[1]), (r) => r[1]);
-  const tMaps = D.terr.find((t) => t.id === 'maps');
+  const flagCol = (k) => ({ hi: css('--crit'), lo: css('--good'), ok: css('--t2'), off: css('--t4') })[k];
+  const flagTxt = (s) => ({ hi: 'Más críticas que el promedio', lo: 'Menos críticas que el promedio', ok: 'Dentro de lo normal', off: s.estatus === 'cerrada' ? 'Cerrada en Maps' : 'Sin ficha en Maps' })[s.fk];
+  const nCrit = K.n_crit, avgStars = d3.mean(R.filter((r) => r[1]), (r) => r[1]);
+  const hi = act.filter((s) => s.fk === 'hi').sort((a, b) => b.z6 - a.z6);
+  const tip = $('#tip');
+  const showTip = (e, h) => { tip.innerHTML = h; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 305, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; };
+  const hideTip = () => { tip.style.opacity = 0; };
+  const W_ = (sel) => { const n = $(sel); return n.clientWidth || n.parentElement.clientWidth || 800; };
 
   // ---------- Hero ----------
-  $('#kicker').innerHTML = `<b>${fmt(K.resenas)} reseñas de Google Maps</b> · ${K.tiendas} Samsung Stores · corte ${D.corte}`;
-  $('#lede').textContent = 'Casi la mitad de las reseñas con texto nombran al asesor que los atendió. Lo que se critica también es humano: el trato, la espera y las reparaciones que nadie explica. De ahí salen cinco territorios de campaña.';
-  $('#kcard').append(
-    el('div', { class: 'hd' }, 'La tienda se recuerda por su gente'),
-    ...[[f1(avgStars) + '★', 'promedio de las últimas 300 reseñas por tienda'], [pct(K.sent[0]), 'de las reseñas con texto son positivas'], [pct(K.pct_asesor), 'nombran a quien los atendió'], [tMaps.num, 'de las críticas no tienen respuesta']]
-      .map(([v, l]) => el('div', {}, el('div', { class: 'v' }, v), el('div', { class: 'l' }, l))));
+  $('#kicker').textContent = `${fmt(K.resenas)} reseñas de Google Maps · ${K.tiendas} Samsung Stores · corte ${D.corte}`;
+  $('#h1').innerHTML = `En Maps, las Samsung Stores tienen ${f1(avgStars)} estrellas. Las <b>${fmt(nCrit)}</b> reseñas críticas cuentan otra historia.`;
+  $('#lede').textContent = `Dos de cada tres reseñas tienen menos de tres meses y casi todas son de 5★: las tiendas las están pidiendo. Quien reseña por su cuenta da 5★ el ${pct(K.lg.lg.pct5)} de las veces, no el ${pct(K.lg.nolg.pct5)}. Por eso este tablero se apoya en las críticas y en lo que la gente escribe, tienda por tienda.`;
+  $('#kpis').append(
+    ...[[`${pct(K.pct_asesor)}`, 'de las reseñas con texto nombran al asesor que atendió', `Con nombre, ${pct(K.asesor.neg_con)} son críticas; sin nombre, ${pct(K.asesor.neg_sin)}`],
+      [`${xx(D.drivers.find((d) => d.tema === 'Servicio técnico y reparación').rr)}`, 'más probable una crítica cuando la reseña habla de reparación', `${fmt(TM.reparacion.n)} reseñas tocan el tema; ${pct(TM.reparacion.neg)} son críticas`],
+      [`${hi.length}<small> de ${act.length}</small>`, 'tiendas con más críticas que el promedio en 6 meses', hi.slice(0, 2).map((s) => s.nombre).join(', ') + ' encabezan'],
+      [pct(K.resp_crit), 'de las críticas no tienen respuesta de la tienda', `Polanco es la única que contesta casi todo`]]
+      .map(([v, l, s]) => el('div', { class: 'kpi' }, el('div', { class: 'v', html: v }), el('div', { class: 'l' }, l), el('div', { class: 's' }, s))));
 
   const proj = d3.geoConicConformal().parallels([17.5, 29.5]).rotate([102, 0]);
   function drawDots() {
-    const cv = $('#dots'), box = cv.parentElement.getBoundingClientRect(); const dpr = Math.min(2, devicePixelRatio || 1);
-    const W = Math.round(Math.max(280, box.width)), H = Math.round(Math.max(200, box.height)); cv.width = W * dpr; cv.height = H * dpr;
-    const small = W < 560; proj.fitExtent([[small ? 4 : W * 0.03, small ? 6 : H * 0.07], [W - 4, H - 4]], MX);
+    const cv = $('#dots'); const dpr = Math.min(2, devicePixelRatio || 1);
+    const W = Math.round(cv.clientWidth || 600), H = Math.round(W / 1.42); cv.width = W * dpr; cv.height = H * dpr;
+    proj.fitExtent([[6, 6], [W - 6, H - 6]], MX);
     const off = document.createElement('canvas'); off.width = W; off.height = H; const oc = off.getContext('2d');
-    oc.fillStyle = '#000'; oc.beginPath(); d3.geoPath(proj, oc)(MX); oc.fill();
+    oc.beginPath(); d3.geoPath(proj, oc)(MX); oc.fill();
     const px = oc.getImageData(0, 0, W, H).data;
     const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-    const step = small ? 6 : Math.max(7, Math.round(W / 105)); const rr = step * 0.3;
+    const step = W < 520 ? 6 : Math.max(7, Math.round(W / 92)); const rr = step * 0.32;
     ctx.fillStyle = css('--dot');
-    for (let y = step / 2; y < H; y += step) for (let x = step / 2; x < W; x += step) { if (px[(Math.floor(y) * W + Math.floor(x)) * 4 + 3] > 100) { ctx.beginPath(); ctx.arc(x, y, rr, 0, 7); ctx.fill(); } }
+    for (let y = step / 2; y < H; y += step) for (let x = step / 2; x < W; x += step) if (px[(Math.floor(y) * W + Math.floor(x)) * 4 + 3] > 100) { ctx.beginPath(); ctx.arc(x, y, rr, 0, 7); ctx.fill(); }
+    const order = { ok: 0, lo: 1, hi: 2 };
     const pts = act.map((s) => { const [x, y] = proj([s.lng, s.lat]); return { x: Math.floor(x / step) * step + step / 2, y: Math.floor(y / step) * step + step / 2, s }; });
-    const cells = [...d3.group(pts, (p) => p.x + ',' + p.y).values()].sort((a, b) => b.length - a.length);
+    const cells = [...d3.group(pts, (p) => p.x + ',' + p.y).values()];
     for (const v of cells) {
-      const { x, y } = v[0]; const n = d3.sum(v, (p) => p.s.ntxt || 0); const net = d3.sum(v, (p) => (p.s.net || 0) * (p.s.ntxt || 0)) / (n || 1);
-      const c = netColor(net), r = Math.min(step * 1.5, rr * 1.7 + Math.sqrt(v.length - 1) * rr * 0.8);
-      const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.4); g.addColorStop(0, c + '70'); g.addColorStop(1, c + '00');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r * 3.4, 0, 7); ctx.fill();
+      const { x, y } = v[0]; const k = v.map((p) => p.s.fk).sort((a, b) => order[b] - order[a])[0];
+      const c = flagCol(k); const r = rr * 1.5 + Math.min(4, v.length - 1) * rr * 0.35;
+      if (k !== 'ok') { const g = ctx.createRadialGradient(x, y, 0, x, y, r * 3.6); g.addColorStop(0, c + '80'); g.addColorStop(1, c + '00'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r * 3.6, 0, 7); ctx.fill(); }
       ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
     }
   }
 
+  // ---------- Lectura de Maps ----------
+  const last3 = K.mon.slice(0, 3).reduce((a, m) => a + m[0], 0), tot12 = K.mon.reduce((a, m) => a + m[0], 0);
+  $('#lec-h').textContent = `Las tiendas piden reseñas, y eso cambia lo que dice Maps`;
+  $('#lec-p').textContent = `En los últimos tres meses llegaron ${fmt(last3)} reseñas; en los nueve anteriores, ${fmt(tot12 - last3)}. Las de Local Guides, gente que reseña por costumbre y no porque se lo pidan en caja, son ${pct(K.lg_share)} del total y muestran una tienda más exigente.`;
+  function pairs() {
+    const rows = [['Da 5 estrellas', 'pct5', css('--good')], ['Es una crítica', 'neg', css('--crit')], ['Nombra al asesor', 'ase', css('--accent')]];
+    const lg = { ...K.lg.lg }, no = { ...K.lg.nolg };
+    $('#pairs').replaceChildren(...rows.map(([lab, k, c]) => el('div', { class: 'pair' }, el('div', { class: 'lb' }, lab),
+      ...[['Local Guides', lg[k], 1], ['Resto', no[k], 0.45]].map(([n, v, o]) => el('div', { class: 'prow' }, el('span', { class: o === 1 ? '' : 'muted' }, n), el('span', { class: 'tr' }, el('i', { style: `width:${v}%;background:${c};opacity:${o === 1 ? 1 : 0.5}` })), el('span', { class: 'v' }, pct(v)))))));
+  }
+  function mon() {
+    const svg = d3.select('#mon'); const W = W_('#mon'), H = 260, m = { l: 0, r: 0, t: 28, b: 30 };
+    svg.attr('viewBox', `0 0 ${W} ${H}`).selectAll('*').remove();
+    const data = K.mon.map((d, i) => ({ i, n: d[0], neg: d[1], p5: d[0] ? d[2] / d[0] * 100 : 0 })).reverse();
+    const x = d3.scaleBand(data.map((d) => d.i), [m.l, W - m.r]).padding(0.22), y = d3.scaleLinear([0, d3.max(data, (d) => d.n)], [H - m.b, m.t]);
+    const g = svg.selectAll('g').data(data).join('g');
+    g.append('rect').attr('x', (d) => x(d.i)).attr('width', x.bandwidth()).attr('y', (d) => y(d.n)).attr('height', (d) => y(0) - y(d.n)).attr('rx', 5).attr('fill', (d) => d.i < 3 ? css('--accent') : css('--t4'));
+    g.append('text').attr('x', (d) => x(d.i) + x.bandwidth() / 2).attr('y', (d) => y(d.n) - 7).attr('text-anchor', 'middle').attr('fill', css('--t2')).attr('font-family', 'JetBrains Mono').attr('font-size', W < 520 ? 9 : 11.5).text((d) => W < 520 && d.n < 1000 ? '' : fmt(d.n));
+    g.append('text').attr('x', (d) => x(d.i) + x.bandwidth() / 2).attr('y', H - 9).attr('text-anchor', 'middle').attr('fill', css('--t3')).attr('font-size', W < 520 ? 9.5 : 12).text((d) => d.i === 0 ? 'Este mes' : (W < 520 ? d.i : d.i === 1 ? 'Hace 1' : d.i));
+    $('#mon-sub').textContent = 'Meses hacia atrás desde el corte. Google redondea las fechas, así que cada barra es aproximada.';
+  }
+
   // ---------- Territories ----------
-  const person = (on) => `<svg viewBox="0 0 26 34" aria-hidden="true"><use href="#person" fill="${on ? '#fff' : 'rgba(255,255,255,.24)'}"/></svg>`;
-  const isoT = { asesor: 'De cada 10 reseñas con texto, # nombran a su asesor', datos: 'De cada 10 que hablan de traspaso, # dan 4 o 5★', plegables: 'De cada 10 que mencionan Fold o Flip, # son críticas', maps: 'De cada 10 críticas, # siguen sin respuesta' };
-  const isoLabel = Object.fromEntries(D.terr.map((t) => [t.id, (isoT[t.id] || '').replace('#', t.iso)]));
-  $('#tidx').append(...D.terr.map((t, i) => el('a', { href: '#t-' + t.id, class: 'c-' + t.color }, el('span', { class: 'n' }, t.dir), el('span', { class: 't' }, t.title))));
-  $('#posters').append(...D.terr.map((t) => el('article', { class: 'poster c-' + t.color, id: 't-' + t.id },
-    el('div', { class: 'pblock' },
-      el('span', { class: 'pill' }, t.dir),
-      el('div', { class: 'big' }, t.num), el('div', { class: 'bigl' }, t.numl),
-      t.iso != null ? el('div', {}, el('div', { class: 'iso', role: 'img', 'aria-label': isoLabel[t.id] || '', html: d3.range(10).map((j) => person(j < t.iso)).join('') }), el('div', { class: 'isol' }, isoLabel[t.id] || '')) : null),
-    el('div', { class: 'pbody' },
-      el('h3', {}, t.title), el('p', { class: 'ins' }, t.ins),
-      el('div', { class: 'quotes' }, ...t.q.map((q) => el('div', { class: 'q' }, q))),
-      el('div', { class: 'idea' }, el('div', { class: 'k' }, 'La idea'), el('div', { class: 'v' }, t.idea)),
-      el('div', { class: 'path' }, ...t.path.map(([w, p], j) => el('div', { class: 'step' }, el('div', { class: 'w' }, el('i', {}, String(j + 1)), w), el('p', {}, p)))),
-      el('div', { class: 'start' }, el('span', { class: 'lb' }, 'Dónde empezar'), ...t.stores.map(([i, v]) => el('button', { class: 'chip', onclick: () => goStore(i) }, S[i].nombre, el('span', { class: 'num' }, t.storesl.startsWith('%') ? v + '%' : fmt(v)))))))));
+  const Q = D.quotes;
+  const qEl = (q) => el('div', { class: 'q' }, el('p', {}, '“' + q[0] + '”'), el('div', { class: 'src' }, `${'★'.repeat(q[3])} · ${S[q[1]].nombre} · ${q[2]}`));
+  const trendTxt = (t) => t == null ? '—' : t >= 1.15 ? `Crece (${xx(t)})` : t <= 0.85 ? `Pesa menos (${xx(t)})` : 'Estable';
+  const NT = K.con_texto, PN = K.pall / 100;
+  const rrRest = (m) => { const kIn = m.neg / 100 * m.n, kOut = PN * NT - kIn; return (m.neg / 100) / (kOut / (NT - m.n)); };
+  const mets = (m) => { const rr = rrRest(m); return el('div', { class: 'mets' },
+    el('div', { class: 'met' }, el('div', { class: 'v' }, fmt(m.n)), el('div', { class: 'l' }, `reseñas lo mencionan (${pct(m.share)})`)),
+    el('div', { class: 'met' }, el('div', { class: 'v', style: `color:${rr > 1.5 ? css('--crit') : rr < 0.67 ? css('--good') : css('--t1')}` }, xx(rr)), el('div', { class: 'l' }, 'probabilidad de crítica contra las que no lo mencionan')),
+    el('div', { class: 'met' }, el('div', { class: 'v' }, String(m.stores)), el('div', { class: 'l' }, 'tiendas con 3 o más menciones')),
+    el('div', { class: 'met' }, el('div', { class: 'v', style: 'font:600 16px/1.3 var(--f-ui);padding-top:2px' }, trendTxt(m.trend)), el('div', { class: 'l' }, 'peso en los últimos 6 meses contra antes'))); };
+  const path = (steps) => el('div', { class: 'path' }, ...steps.map(([w, p]) => el('div', { class: 'step' }, el('div', { class: 'w' }, w), el('p', {}, p))));
+  const start = (list, unit) => el('div', { class: 'start' }, el('span', { class: 'lb' }, 'Dónde empezar'), ...list.map(([i, v]) => el('button', { class: 'chip', onclick: () => goStore(i) }, S[i].nombre, el('span', { class: 'num' }, unit(v)))));
+  const A = K.asesor;
+  const TER = [
+    { id: 'asesor', title: 'Tu asesor Galaxy tiene nombre', num: pct(TM.asesor.share), numl: 'de las reseñas con texto nombran a quien atendió: Itzel, Oswaldo, Karen, Kevin.',
+      ins: `Cuando la reseña tiene nombre, la crítica casi desaparece: ${pct(A.neg_con)} contra ${pct(A.neg_sin)}. Podría ser solo efecto de las reseñas pedidas, así que lo revisamos entre Local Guides, que escriben por su cuenta: ${pct(A.lg_con)} contra ${pct(A.lg_sin)}. La diferencia se sostiene.`,
+      idea: 'Los asesores reales como la cara de Samsung en cada ciudad.',
+      path: [['En tienda', 'Gafete con nombre y QR al perfil del asesor'], ['Digital', 'Contenido corto de asesores reales por ciudad'], ['De regreso', 'Cita con tu asesor desde la web o WhatsApp']],
+      stores: TM.asesor.top, unit: (v) => v + '% lo nombra' },
+    { id: 'reparacion', title: 'Mi reparación, en tiempo real', num: fmt(TM.reparacion.n), numl: `reseñas hablan de servicio técnico; ${pct(TM.reparacion.neg)} son críticas.`,
+      ins: 'Las quejas repiten tres cosas: semanas sin noticias, un teléfono de la tienda que nadie contesta y fechas de entrega que se mueven. Del arreglo en sí se habla poco.',
+      idea: 'Que nadie tenga que ir a preguntar por su equipo.',
+      path: [['En tienda', 'Ticket con QR y fecha compromiso al dejar el equipo'], ['Digital', 'Aviso por WhatsApp o Samsung Members en cada cambio de estado'], ['De regreso', '“Listo para recoger” con horario sin fila']],
+      stores: TM.reparacion.top_neg, unit: (v) => v + ' críticas' },
+    { id: 'datos', title: 'Estrena sin perder nada', num: fmt(TM.datos.n), numl: `reseñas agradecen el traspaso de fotos, contactos y WhatsApp. ${pct(TM.datos.pct5)} son de 5★.`,
+      ins: 'Es un tema chico pero en crecimiento, y es donde aparecen los que se cambian desde iPhone.',
+      idea: 'Trae tu teléfono viejo. Te vas con todo listo.',
+      path: [['Digital', 'Campaña para quien se cambia de iPhone y para el recambio familiar, con Galaxy Canje'], ['En tienda', 'Cita de traspaso de 20 minutos, con fotos y chats incluidos'], ['De regreso', 'Mensaje a los 7 días con tips del equipo nuevo']],
+      stores: TM.datos.top, unit: (v) => v + ' reseñas' },
+    { id: 'plegables', title: 'Plegables sin miedo', num: pct(TM.plegables.neg), numl: `de las ${TM.plegables.n} reseñas que mencionan Fold o Flip son críticas.`,
+      ins: 'El dueño de un plegable pagó el teléfono más caro y es el que más se queja: mica sin stock, días sin equipo, garantía negada. Pocas reseñas, pero la tasa de crítica más alta de todos los equipos.',
+      idea: 'Un servicio a la altura del teléfono más caro.',
+      path: [['Digital', 'CRM a dueños de Fold y Flip: cita de mica con precio cerrado'], ['En tienda', 'Cambio de mica express con la pieza apartada antes de la cita'], ['De regreso', 'Cuidados y cobertura Care+ al recoger']],
+      stores: TM.plegables.top_neg, unit: (v) => v + ' críticas' },
+  ];
+  function territories() {
+    const t = TER[0];
+    const ppl = (n, k) => el('span', { class: 'ppl', html: d3.range(n).map((j) => `<svg viewBox="0 0 26 34"><use href="#pp" fill="${j < k ? '#FF8A80' : 'rgba(255,255,255,.85)'}"/></svg>`).join('') });
+    $('#lead').replaceChildren(el('article', { class: 'lead', id: 't-' + t.id },
+      el('div', { class: 'blue' }, el('span', { class: 'tag' }, 'Territorio principal · tienda a digital'), el('div', { class: 'big' }, t.num), el('div', { class: 'bigl' }, t.numl),
+        el('div', { class: 'cmp' }, el('div', { style: 'font-size:14px;opacity:.8' }, 'De cada 100 reseñas, cuántas son críticas'),
+          el('div', { class: 'row' }, el('span', {}, `Sin nombre: ${Math.round(A.neg_sin)}`), ppl(100, Math.round(A.neg_sin))),
+          el('div', { class: 'row' }, el('span', {}, `Con nombre: ${Math.max(1, Math.round(A.neg_con))}`), ppl(100, Math.max(1, Math.round(A.neg_con)))))),
+      el('div', { class: 'tbody' }, el('h3', {}, t.title), el('p', { class: 'ins' }, t.ins), mets(TM[t.id]), el('div', { class: 'quotes' }, ...Q[t.id].map(qEl)),
+        el('div', { class: 'idea' }, el('div', { class: 'k' }, 'La idea'), el('div', { class: 'v' }, t.idea)), path(t.path), start(t.stores, t.unit))));
+    $('#tgrid').replaceChildren(...TER.slice(1).map((t) => el('article', { class: 'tcard', id: 't-' + t.id },
+      el('h3', {}, t.title), el('div', { class: 'hn' }, el('span', { class: 'n' }, t.num), el('span', { class: 'nl' }, t.numl)),
+      el('p', { class: 'ins' }, t.ins), mets(TM[t.id]), qEl(Q[t.id][0]),
+      el('div', { class: 'idea' }, el('div', { class: 'k' }, 'La idea'), el('div', { class: 'v' }, t.idea)), path(t.path), start(t.stores, t.unit))));
+  }
+
+  // ---------- Drivers ----------
+  const DRV = D.drivers.slice();
+  const topD = DRV.slice().sort((a, b) => b.rr - a.rr)[0];
+  const gar = DRV.find((d) => d.tema === 'Garantía y políticas');
+  $('#drv-h').textContent = `Lo que más dispara una crítica es no encontrar el producto (${xx(topD.rr)}) y una garantía que no aplica (${xx(gar.rr)})`;
+  function drivers() {
+    const svg = d3.select('#drv'); const W = W_('#drv'), sm = W < 640, H = sm ? 440 : 480, m = { l: 44, r: sm ? 16 : 40, t: 16, b: 40 };
+    svg.attr('viewBox', `0 0 ${W} ${H}`).selectAll('*').remove();
+    const x = d3.scaleLog([0.25, 100], [m.l, W - m.r]), y = d3.scaleLog([0.15, 20], [H - m.b, m.t]), r = d3.scaleSqrt([0, d3.max(DRV, (d) => d.k)], [4, sm ? 18 : 26]);
+    svg.append('rect').attr('x', m.l).attr('width', W - m.r - m.l).attr('y', y(1)).attr('height', y(0.15) - y(1)).attr('fill', css('--band')).attr('rx', 8);
+    svg.append('text').attr('x', m.l + 10).attr('y', y(1) + 18).attr('fill', css('--t3')).attr('font-size', 12).text('Por debajo de 1×: protege contra la crítica');
+    [0.2, 1, 5, 10].forEach((v) => svg.append('text').attr('x', m.l - 8).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('fill', css('--t3')).attr('font-family', 'JetBrains Mono').attr('font-size', 11).text(v + '×'));
+    [0.5, 1, 5, 20, 100].forEach((v) => svg.append('text').attr('x', x(v)).attr('y', H - 14).attr('text-anchor', 'middle').attr('fill', css('--t3')).attr('font-family', 'JetBrains Mono').attr('font-size', 11).text(v + '%'));
+    svg.append('text').attr('x', W - m.r).attr('y', H - 0).attr('text-anchor', 'end').attr('fill', css('--t3')).attr('font-size', 12).text('% de reseñas que lo mencionan →');
+    svg.append('text').attr('x', 4).attr('y', m.t + 2).attr('fill', css('--t3')).attr('font-size', 12).attr('dy', '0.8em').text('');
+    const g = svg.selectAll('g.d').data(DRV.sort((a, b) => b.k - a.k)).join('g').attr('class', 'd');
+    g.append('rect').attr('x', (d) => x(d.share) - 1.5).attr('width', 3).attr('y', (d) => y(Math.min(20, d.hi))).attr('height', (d) => y(Math.max(0.15, d.lo)) - y(Math.min(20, d.hi))).attr('rx', 1.5).attr('fill', css('--t4')).attr('opacity', 0.6);
+    g.append('circle').attr('cx', (d) => x(d.share)).attr('cy', (d) => y(d.rr)).attr('r', (d) => r(d.k)).attr('fill', (d) => d.lo > 3 ? css('--crit') : d.hi < 1 ? css('--good') : css('--warn')).attr('fill-opacity', 0.85)
+      .on('mousemove', (e, d) => showTip(e, `<b>${d.tema}</b>${xx(d.rr)} más probable una crítica<br>${fmt(d.n)} reseñas lo mencionan · ${fmt(d.k)} críticas<br><span class="muted">Rango: ${xx(d.lo)} a ${xx(d.hi)}</span>`)).on('mouseleave', hideTip);
+    // labels with simple collision avoidance
+    const fs = sm ? 11 : 13, cw = fs * 0.55;
+    const circ = DRV.map((d) => ({ cx: x(d.share), cy: y(d.rr), r: r(d.k) }));
+    const labs = DRV.map((d) => { const txt = d.tema.replace(' y reparación', '').replace(' / trade-in', '').replace(', promociones y pago', ' y promociones').replace(' y experiencia demo', ' y demo'); return { d, txt, w: txt.length * cw, cx: x(d.share), cy: y(d.rr), rad: r(d.k) }; });
+    labs.sort((a, b) => b.rad - a.rad);
+    const placed = [];
+    const ok = (bx, by, w) => bx > m.l && bx + w < W - 2 && !placed.some((p) => bx < p.x0 + p.w + 4 && p.x0 < bx + w + 4 && Math.abs(by - p.y) < fs + 2) && !circ.some((c) => bx < c.cx + c.r + 2 && c.cx - c.r - 2 < bx + w && by - fs * 0.8 < c.cy + c.r && c.cy - c.r < by + 2);
+    for (const l of labs) {
+      const cands = []; for (const dy of [0, -1, 1, -2, 2, -3, 3, 4, -4]) { const by = l.cy + 4 + dy * (fs + 3); cands.push([l.cx + l.rad + 6, by], [l.cx - l.rad - 6 - l.w, by]); }
+      const c = cands.find(([bx, by]) => ok(bx, by, l.w)) || cands[0]; l.x0 = c[0]; l.y = c[1]; placed.push(l);
+    }
+    svg.selectAll('line.ld').data(labs.filter((l) => Math.abs(l.y - 4 - l.cy) > 6 || (Math.abs(l.x0 - (l.cx + l.rad + 6)) > 1 && Math.abs(l.x0 + l.w - (l.cx - l.rad - 6)) > 1))).join('line').attr('class', 'ld').attr('x1', (l) => l.cx).attr('y1', (l) => l.cy).attr('x2', (l) => l.x0 > l.cx ? l.x0 - 2 : l.x0 + l.w + 2).attr('y2', (l) => l.y - 4).attr('stroke', css('--t3')).attr('stroke-width', 1);
+    svg.selectAll('text.lb').data(labs).join('text').attr('class', 'lb').attr('x', (l) => l.x0).attr('y', (l) => l.y).attr('fill', css('--t1')).attr('font-size', fs).text((l) => l.txt);
+  }
 
   // ---------- Map ----------
   const OFM = 'https://tiles.openfreemap.org/styles/';
   let map = null, fallback = false, sel = null, is3d = true;
-  const storesGeo = () => ({ type: 'FeatureCollection', features: S.filter((s) => s.lat).map((s) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [s.lng, s.lat] }, properties: { i: s.i, name: s.nombre, st: s.estatus, net: s.net ?? -1 } })) });
-  function localStyle() {
-    const l = isLight();
-    return { version: 8, sources: { mx: { type: 'geojson', data: MX } }, layers: [
-      { id: 'bg', type: 'background', paint: { 'background-color': l ? '#E6E9F0' : '#0C0C11' } },
-      { id: 'mx', type: 'fill', source: 'mx', paint: { 'fill-color': l ? '#FFFFFF' : '#1B1B24' } },
-      { id: 'mxl', type: 'line', source: 'mx', paint: { 'line-color': l ? '#DADDE5' : '#272732', 'line-width': 0.8 } }] };
-  }
+  const storesGeo = () => ({ type: 'FeatureCollection', features: S.filter((s) => s.lat).map((s) => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [s.lng, s.lat] }, properties: { i: s.i, name: s.nombre, fk: s.fk, hi: s.fk === 'hi' ? 1 : 0, lo: s.fk === 'lo' ? 1 : 0 } })) });
+  function localStyle() { const l = isLight(); return { version: 8, sources: { mx: { type: 'geojson', data: MX } }, layers: [
+    { id: 'bg', type: 'background', paint: { 'background-color': l ? '#E6E9F0' : '#0C0C11' } },
+    { id: 'mx', type: 'fill', source: 'mx', paint: { 'fill-color': l ? '#FFFFFF' : '#1B1B24' } },
+    { id: 'mxl', type: 'line', source: 'mx', paint: { 'line-color': l ? '#DADDE5' : '#272732', 'line-width': 0.8 } }] }; }
   const styleURL = () => OFM + (isLight() ? 'positron' : 'dark');
   function addLayers() {
     const st = map.getStyle(); const firstSym = (st.layers.find((l) => l.type === 'symbol') || {}).id;
-    if (st.sources.openmaptiles && !map.getLayer('b3d')) {
-      map.addLayer({ id: 'b3d', type: 'fill-extrusion', source: 'openmaptiles', 'source-layer': 'building', minzoom: 14,
-        paint: { 'fill-extrusion-color': isLight() ? '#DDE1EA' : '#262632', 'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 14, 0, 15.5, ['coalesce', ['get', 'render_height'], 8]], 'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0], 'fill-extrusion-opacity': 0.88 } }, firstSym);
-    }
-    if (!map.getSource('st')) map.addSource('st', { type: 'geojson', data: storesGeo(), cluster: true, clusterRadius: 44, clusterMaxZoom: 11 });
-    const [p, m, n] = sentCol(); const ink = css('--ink');
-    const netExpr = ['case', ['!=', ['get', 'st'], 'activa'], css('--t4'), ['>=', ['get', 'net'], 85], p, ['>=', ['get', 'net'], 60], m, n];
-    map.addLayer({ id: 'cl', type: 'circle', source: 'st', filter: ['has', 'point_count'], paint: { 'circle-color': css('--accent'), 'circle-radius': ['step', ['get', 'point_count'], 16, 5, 20, 10, 26], 'circle-stroke-width': 6, 'circle-stroke-color': css('--accent'), 'circle-stroke-opacity': 0.25 } });
-    if (st.glyphs) map.addLayer({ id: 'clc', type: 'symbol', source: 'st', filter: ['has', 'point_count'], layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 13, 'text-allow-overlap': true }, paint: { 'text-color': '#fff' } });
-    map.addLayer({ id: 'halo', type: 'circle', source: 'st', filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'i'], sel ?? -1]], paint: { 'circle-radius': 24, 'circle-color': css('--accent'), 'circle-opacity': 0.28 } });
-    map.addLayer({ id: 'pt', type: 'circle', source: 'st', filter: ['!', ['has', 'point_count']], paint: { 'circle-color': netExpr, 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 6, 12, 9, 16, 12], 'circle-stroke-width': 2.5, 'circle-stroke-color': ink, 'circle-pitch-alignment': 'viewport' } });
+    if (st.sources.openmaptiles && !map.getLayer('b3d')) map.addLayer({ id: 'b3d', type: 'fill-extrusion', source: 'openmaptiles', 'source-layer': 'building', minzoom: 14,
+      paint: { 'fill-extrusion-color': isLight() ? '#DDE1EA' : '#262632', 'fill-extrusion-height': ['interpolate', ['linear'], ['zoom'], 14, 0, 15.5, ['coalesce', ['get', 'render_height'], 8]], 'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0], 'fill-extrusion-opacity': 0.88 } }, firstSym);
+    if (!map.getSource('st')) map.addSource('st', { type: 'geojson', data: storesGeo(), cluster: true, clusterRadius: 44, clusterMaxZoom: 11, clusterProperties: { hi: ['+', ['get', 'hi']], lo: ['+', ['get', 'lo']] } });
+    const ink = css('--ink'), cHi = css('--crit'), cLo = css('--good'), cOk = css('--t2'), cOff = css('--t4');
+    const clCol = ['case', ['>', ['get', 'hi'], 0], cHi, ['>', ['get', 'lo'], 0], cLo, cOk];
+    map.addLayer({ id: 'cl', type: 'circle', source: 'st', filter: ['has', 'point_count'], paint: { 'circle-color': ink, 'circle-radius': ['step', ['get', 'point_count'], 16, 5, 20, 10, 25], 'circle-stroke-width': 4, 'circle-stroke-color': clCol } });
+    if (st.glyphs) map.addLayer({ id: 'clc', type: 'symbol', source: 'st', filter: ['has', 'point_count'], layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Regular'], 'text-size': 13, 'text-allow-overlap': true }, paint: { 'text-color': css('--t1') } });
+    map.addLayer({ id: 'halo', type: 'circle', source: 'st', filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'i'], sel ?? -1]], paint: { 'circle-radius': 24, 'circle-color': css('--accent'), 'circle-opacity': 0.3 } });
+    map.addLayer({ id: 'pt', type: 'circle', source: 'st', filter: ['!', ['has', 'point_count']], paint: { 'circle-color': ['match', ['get', 'fk'], 'hi', cHi, 'lo', cLo, 'off', cOff, cOk], 'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 6, 12, 9, 16, 12], 'circle-stroke-width': 2.5, 'circle-stroke-color': ink, 'circle-pitch-alignment': 'viewport' } });
     if (st.glyphs) map.addLayer({ id: 'ptl', type: 'symbol', source: 'st', filter: ['!', ['has', 'point_count']], minzoom: 10.5, layout: { 'text-field': ['get', 'name'], 'text-font': ['Noto Sans Regular'], 'text-size': 13, 'text-offset': [0, 1.3], 'text-anchor': 'top', 'text-optional': true }, paint: { 'text-color': css('--t1'), 'text-halo-color': ink, 'text-halo-width': 1.6 } });
   }
   const MXB = [[-117.5, 14.3], [-86.5, 32.8]];
-  const wide = () => innerWidth > 820;
-  const padFor = () => (wide() ? { left: 410, top: 70, right: 70, bottom: 30 } : { left: 20, top: 70, right: 70, bottom: 40 });
+  const padFor = () => (innerWidth > 820 ? { left: 410, top: 70, right: 70, bottom: 30 } : { left: 20, top: 70, right: 70, bottom: 40 });
   function initMap() {
     map = new maplibregl.Map({ container: 'map', style: styleURL(), bounds: MXB, fitBoundsOptions: { padding: padFor() }, maxPitch: 72, attributionControl: { compact: true } });
-    let loaded = false;
-    const fb = setTimeout(() => { if (!loaded) useFallback(); }, 7000);
+    let loaded = false; const fb = setTimeout(() => { if (!loaded) useFallback(); }, 7000);
     map.on('style.load', () => { loaded = true; clearTimeout(fb); addLayers(); });
-    map.on('error', (e) => { if (!loaded && !fallback) useFallback(); });
+    map.on('error', () => { if (!loaded && !fallback) useFallback(); });
     map.on('rotate', () => { $('#compass svg').style.transform = `rotate(${-map.getBearing()}deg)`; });
     map.on('click', 'cl', async (e) => { const f = e.features[0]; const z = await map.getSource('st').getClusterExpansionZoom(f.properties.cluster_id); map.easeTo({ center: f.geometry.coordinates, zoom: z + 0.3, duration: 700 }); });
     map.on('click', 'pt', (e) => selectStore(e.features[0].properties.i, true));
     const pop = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 14 });
-    map.on('mouseenter', 'pt', (e) => { map.getCanvas().style.cursor = 'pointer'; const s = S[e.features[0].properties.i]; pop.setLngLat(e.features[0].geometry.coordinates).setHTML(`${s.nombre}<div class="muted">${s.estatus === 'activa' ? `${f1(s.calif)}★ en Maps · neto ${f0(s.net)}` : s.estatus === 'cerrada' ? 'Cerrada en Maps' : 'Sin ficha en Maps'}</div>`).addTo(map); });
+    map.on('mouseenter', 'pt', (e) => { map.getCanvas().style.cursor = 'pointer'; const s = S[e.features[0].properties.i]; pop.setLngLat(e.features[0].geometry.coordinates).setHTML(`${s.nombre}<div class="muted">${flagTxt(s)}</div>`).addTo(map); });
     map.on('mouseleave', 'pt', () => { map.getCanvas().style.cursor = ''; pop.remove(); });
     map.on('mouseenter', 'cl', () => { map.getCanvas().style.cursor = 'pointer'; }); map.on('mouseleave', 'cl', () => { map.getCanvas().style.cursor = ''; });
   }
@@ -549,187 +638,168 @@ footer p{margin:0 0 8px}
   function restyle() { if (map) map.setStyle(fallback ? localStyle() : styleURL()); }
   function goStore(i) { $('#mapa').scrollIntoView({ behavior: 'smooth' }); setTimeout(() => selectStore(i, true), 500); }
   function setHalo() { if (map && map.getLayer('halo')) map.setFilter('halo', ['all', ['!', ['has', 'point_count']], ['==', ['get', 'i'], sel ?? -1]]); }
-  function selectStore(i, fly) {
-    sel = i; const s = S[i]; renderPanel(); setHalo();
-    if (fly && map && s.lat) map.flyTo({ center: [s.lng, s.lat], zoom: fallback ? 11 : 16.2, pitch: is3d ? 58 : 0, bearing: is3d ? -24 : 0, padding: padFor(), speed: 1.1, curve: 1.5, essential: true });
-  }
-  function home() { sel = null; renderPanel(); setHalo(); map.fitBounds(MXB, { padding: padFor(), pitch: 0, bearing: 0, duration: 1200 }); document.querySelectorAll('#cities button').forEach((b) => b.classList.remove('on')); }
-  $('#bhome').onclick = home;
+  function selectStore(i, fly) { sel = i; const s = S[i]; renderPanel(); setHalo(); if (fly && map && s.lat) map.flyTo({ center: [s.lng, s.lat], zoom: fallback ? 11 : 16.2, pitch: is3d ? 58 : 0, bearing: is3d ? -24 : 0, padding: padFor(), speed: 1.1, curve: 1.5, essential: true }); }
+  $('#bhome').onclick = () => { sel = null; renderPanel(null); setHalo(); map.fitBounds(MXB, { padding: padFor(), pitch: 0, bearing: 0, duration: 1200 }); document.querySelectorAll('#cities button').forEach((b) => b.classList.remove('on')); };
   $('#compass').onclick = () => map.easeTo({ bearing: 0, duration: 600 });
   $('#b3d').onclick = () => { is3d = !is3d; $('#b3d').textContent = is3d ? '3D' : '2D'; map.easeTo({ pitch: is3d ? 58 : 0, bearing: is3d ? -24 : 0, duration: 800 }); };
   const states = d3.groups(act, (s) => s.estado).sort((a, b) => b[1].length - a[1].length).slice(0, 8);
   $('#cities').append(...states.map(([st, v]) => el('button', { class: 'glass', onclick: (e) => {
     document.querySelectorAll('#cities button').forEach((b) => b.classList.remove('on')); e.currentTarget.classList.add('on');
-    const xs = v.map((s) => s.lng), ys = v.map((s) => s.lat); sel = null; setHalo(); renderPanel(st);
-    map.fitBounds([[d3.min(xs), d3.min(ys)], [d3.max(xs), d3.max(ys)]], { padding: padFor(), maxZoom: 13.5, pitch: is3d ? 40 : 0, bearing: 0, duration: 1400 });
+    sel = null; setHalo(); renderPanel(st);
+    map.fitBounds([[d3.min(v, (s) => s.lng), d3.min(v, (s) => s.lat)], [d3.max(v, (s) => s.lng), d3.max(v, (s) => s.lat)]], { padding: padFor(), maxZoom: 13.5, pitch: is3d ? 40 : 0, bearing: 0, duration: 1400 });
   } }, st.replace('Ciudad de México', 'CDMX').replace('Estado de México', 'Edo. Méx.'), ' ', el('span', { class: 'muted num', style: 'font-size:12px' }, String(v.length)))));
 
-  const sbar = (s, h) => s.sent ? el('div', { class: 'sbar', style: h ? `height:${h}px` : '' }, ...s.sent.map((v, j) => v > 0 ? el('i', { style: `width:${v}%;background:${sentCol()[j]}` }) : null)) : null;
-  const mini = (s) => el('span', { class: 'mini' }, ...(s.sent || []).map((v, j) => el('i', { style: `width:${v}%;background:${sentCol()[j]}` })));
+  function spark(s, w = 120, h = 28) {
+    const mon = (s.mon || []).slice().reverse(); const mx = Math.max(1, d3.max(mon, (d) => d[0]));
+    const bw = w / 12; const svg = `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true">${mon.map((d, i) => { const bh = Math.max(1.5, d[0] / mx * (h - 2)), nh = d[0] ? d[1] / mx * (h - 2) : 0; return `<rect x="${i * bw + 1}" y="${h - bh}" width="${bw - 2}" height="${bh}" rx="1.5" fill="${css('--t4')}"/>${nh > 0 ? `<rect x="${i * bw + 1}" y="${h - Math.max(2, nh)}" width="${bw - 2}" height="${Math.max(2, nh)}" rx="1.5" fill="${css('--crit')}"/>` : ''}`; }).join('')}</svg>`;
+    return el('span', { html: svg });
+  }
+  const flagEl = (s) => el('span', { class: 'flag' }, el('i', { class: 'sw', style: `background:${flagCol(s.fk)};margin:0` }), flagTxt(s));
   let pq = '', pState = null;
   function renderPanel(stFilter) {
     if (stFilter !== undefined) pState = stFilter;
     const P = $('#panel'); P.replaceChildren();
     if (sel == null) {
       const inp = el('input', { type: 'search', placeholder: 'Buscar tienda, plaza o ciudad', 'aria-label': 'Buscar tienda' }); inp.value = pq;
-      inp.addEventListener('input', () => { pq = inp.value; list(); });
       P.append(el('label', { class: 'search', html: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' }, inp));
       const sc = el('div', { class: 'pscroll' }); P.append(sc);
       const list = () => {
         const q = strip(pq);
-        const rows = S.filter((s) => (!pState || s.estado === pState) && (!q || strip([s.nombre, s.plaza, s.municipio, s.estado].join(' ')).includes(q))).sort((a, b) => (b.estatus === 'activa') - (a.estatus === 'activa') || (a.net ?? 999) - (b.net ?? 999));
-        sc.replaceChildren(
-          el('div', { class: 'ptitle', style: 'font-size:24px;margin-top:0' }, pState || 'Todo México'),
-          el('p', { class: 'muted small', style: 'margin:0' }, `${rows.length} tiendas, de la más criticada a la más querida.`),
+        const rows = S.filter((s) => (!pState || s.estado === pState) && (!q || strip([s.nombre, s.plaza, s.municipio, s.estado].join(' ')).includes(q))).sort((a, b) => (b.estatus === 'activa') - (a.estatus === 'activa') || (b.eb6 ?? 0) - (a.eb6 ?? 0));
+        sc.replaceChildren(el('div', { class: 'ptitle', style: 'font-size:24px;margin-top:0' }, pState || 'Todo México'),
+          el('p', { class: 'muted small', style: 'margin:0' }, `${rows.length} tiendas, de más a menos críticas en los últimos 6 meses.`),
           el('ul', { class: 'slist' }, ...rows.map((s) => el('li', {}, el('button', { onclick: () => selectStore(s.i, true) },
-            el('span', { class: 'nm' }, s.nombre), el('span', { class: 'es' }, s.estatus === 'activa' ? `${s.municipio}, ${s.estado}` : (s.estatus === 'cerrada' ? 'Cerrada en Maps' : 'Sin ficha en Maps')),
-            el('span', { class: 'sb' }, s.sent ? mini(s) : null, el('span', { class: 'num small', style: `color:${netColor(s.net)}` }, s.net != null ? f0(s.net) : '—')))))));
+            el('span', { class: 'nm' }, s.nombre), el('span', { class: 'es' }, s.estatus === 'activa' ? `${s.municipio}, ${s.estado}` : flagTxt(s)),
+            el('span', { class: 'sb' }, el('i', { class: 'sw', style: `background:${flagCol(s.fk)};margin:0` }), el('span', { class: 'num small' }, s.eb6 != null && s.estatus === 'activa' ? pct(s.eb6) : '—')))))));
       };
-      list(); return;
+      inp.addEventListener('input', () => { pq = inp.value; list(); }); list(); return;
     }
     const s = S[sel]; const sc = el('div', { class: 'pscroll' }); P.append(sc);
-    const back = el('button', { class: 'back', onclick: () => { sel = null; setHalo(); renderPanel(); }, html: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Todas las tiendas' });
-    sc.append(back, el('div', { class: 'ptitle' }, s.nombre), el('div', { class: 'muted small' }, `${s.direccion}, ${s.municipio}, ${s.estado}`));
-    if (s.estatus !== 'activa') { sc.append(el('p', { style: 'margin-top:18px' }, s.estatus === 'cerrada' ? 'Aparece en el localizador de Samsung, pero Google Maps la marca como cerrada permanentemente.' : 'Aparece en el localizador de Samsung, pero no tiene ficha propia en Google Maps.')); return; }
-    sc.append(el('div', { class: 'stats' },
-      el('div', { class: 'stat' }, el('div', { class: 'v' }, f1(s.calif) + '★'), el('div', { class: 'l' }, fmt(s.resenas_maps) + ' reseñas en Maps')),
-      el('div', { class: 'stat' }, el('div', { class: 'v', style: `color:${netColor(s.net)}` }, f0(s.net)), el('div', { class: 'l' }, 'sentimiento neto')),
-      el('div', { class: 'stat' }, el('div', { class: 'v' }, f0(s.asesor) + '%'), el('div', { class: 'l' }, 'nombran al asesor'))));
-    sc.append(el('div', { class: 'ph' }, `Sentimiento de ${fmt(s.ntxt)} reseñas con texto`), sbar(s),
-      el('div', { class: 'slg' }, ...['Positivas', 'Con fricción', 'Negativas'].map((l, j) => el('span', {}, el('i', { class: 'sw', style: `background:${sentCol()[j]}` }), `${l} ${pct(s.sent[j])}`))));
-    if (s.dev && s.dev.length) sc.append(el('div', { class: 'ph' }, 'Dispositivos que mencionan'), el('div', { class: 'tags' }, ...s.dev.map(([k, v]) => el('span', { class: 'tag' }, k, el('b', {}, String(v))))));
+    sc.append(el('button', { class: 'back', onclick: () => { sel = null; setHalo(); renderPanel(); }, html: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Todas las tiendas' }),
+      el('div', { class: 'ptitle' }, s.nombre), el('div', { class: 'muted small' }, `${s.direccion}, ${s.municipio}, ${s.estado}`));
+    if (s.estatus !== 'activa') { sc.append(el('p', { class: 'pp' }, s.estatus === 'cerrada' ? 'Aparece en el localizador de Samsung, pero Google Maps la marca como cerrada permanentemente.' : 'Aparece en el localizador de Samsung, pero no tiene ficha propia en Google Maps.')); return; }
+    sc.append(el('div', { style: 'margin-top:14px' }, flagEl(s)),
+      el('div', { class: 'stats' },
+        el('div', { class: 'stat' }, el('div', { class: 'v' }, f1(s.calif) + '★'), el('div', { class: 'l' }, fmt(s.resenas_maps) + ' reseñas en Maps')),
+        el('div', { class: 'stat' }, el('div', { class: 'v', style: `color:${flagCol(s.fk)}` }, pct(s.eb6)), el('div', { class: 'l' }, 'críticas, 6 meses (ajustado)')),
+        el('div', { class: 'stat' }, el('div', { class: 'v' }, f0(s.asesor) + '%'), el('div', { class: 'l' }, 'nombran al asesor'))),
+      el('p', { class: 'pp' }, `${s.k6} críticas en ${s.n6} reseñas con texto de los últimos 6 meses; el promedio nacional es ${pct(K.p6)}.` + (s.lg_neg != null ? ` Entre sus Local Guides, ${pct(s.lg_neg)} son críticas.` : '')),
+      el('div', { class: 'ph' }, 'Reseñas por mes, últimos 12 meses'), spark(s, 300, 44), el('div', { class: 'muted', style: 'font-size:12px;margin-top:4px' }, 'En rojo, las críticas. A la derecha, el mes más reciente.'));
+    if (s.dev && s.dev.length) sc.append(el('div', { class: 'ph' }, 'Dispositivos que mencionan'), el('div', { class: 'tags' }, ...s.dev.map(([k, v]) => el('span', { class: 'tg' }, k, el('b', {}, String(v))))));
     const tn = Object.entries(s.temas_neg || {}).filter((d) => d[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 4);
-    if (tn.length) sc.append(el('div', { class: 'ph' }, 'De qué se quejan'), el('div', { class: 'tags' }, ...tn.map(([k, v]) => el('span', { class: 'tag' }, TOP[TK.indexOf(k)], el('b', {}, String(v))))));
+    if (tn.length) sc.append(el('div', { class: 'ph' }, 'De qué se quejan'), el('div', { class: 'tags' }, ...tn.map(([k, v]) => el('span', { class: 'tg' }, TOP[TK.indexOf(k)], el('b', {}, String(v))))));
     const mine = R.filter((r) => r[0] === sel && r[4]);
-    const crit = mine.filter((r) => r[7] === 2 || r[7] === 1).slice(0, 2), good = mine.filter((r) => r[7] === 0 && r[4].length > 60).slice(0, 2);
-    const rv = (r) => el('div', { class: 'rv' }, el('div', { class: 'm' }, el('span', { class: 'stars' + (r[1] >= 4 ? ' good' : '') }, '★'.repeat(r[1])), r[3]), r[4].length > 260 ? r[4].slice(0, 260) + '…' : r[4]);
-    if (crit.length) sc.append(el('div', { class: 'ph' }, 'Críticas recientes'), ...crit.map(rv));
+    const crit = mine.filter((r) => r[7] === 2).slice(0, 2), good = mine.filter((r) => r[7] === 0 && r[4].length > 60).slice(0, 2);
+    const rv = (r) => el('div', { class: 'rv' }, el('div', { class: 'm' }, el('span', { class: 'stars' + (r[1] >= 4 ? ' good' : '') }, '★'.repeat(r[1])), r[3], r[9] ? 'Local Guide' : null), r[4].length > 260 ? r[4].slice(0, 260) + '…' : r[4]);
+    if (crit.length) sc.append(el('div', { class: 'ph' }, 'Críticas más recientes'), ...crit.map(rv));
     if (good.length) sc.append(el('div', { class: 'ph' }, 'Lo que elogian'), ...good.map(rv));
     sc.append(el('a', { class: 'ext', href: s.maps, target: '_blank', rel: 'noopener' }, 'Abrir en Google Maps ↗'));
   }
 
-  // ---------- Sentiment ----------
-  let rk = 'neg';
-  function sentiment() {
-    const [p, m, n] = K.sent; const cols = sentCol();
-    $('#sent-line').textContent = `${pct(p)} positivas, ${pct(n)} negativas`;
-    $('#sent-sub').textContent = `Sobre ${fmt(K.con_texto)} reseñas con texto. Las de fricción (${pct(m)}) son pocas, pero señalan lo que falla incluso con clientes contentos.`;
-    const rn = Math.round(n), rm = Math.max(1, Math.round(m)), rp = 100 - rm - rn;
-    $('#units').setAttribute('aria-label', `${rp} positivas, ${rm} con fricción, ${rn} negativas de cada 100`);
-    $('#units').replaceChildren(...d3.range(100).map((i) => el('i', { style: `background:${cols[i < rp ? 0 : i < rp + rm ? 1 : 2]}` })));
-    rank();
+  // ---------- Funnel ----------
+  const p6 = K.p6 / 100;
+  $('#fun-h').textContent = `${hi.length} tiendas tienen más críticas de las que su tamaño explica`;
+  $('#fun-p').textContent = `Una tienda con 20 reseñas puede tener 10% de críticas por azar; una con 280, no. Esta gráfica compara a cada tienda contra lo esperado para su número de reseñas en los últimos 6 meses. Ojo: varias de las tiendas marcadas reciben muy pocas reseñas recientes, señal de que no las piden; su número se parece más a la experiencia espontánea.`;
+  function funnel() {
+    const svg = d3.select('#fun'); const W = W_('#fun'), sm = W < 600, H = sm ? 380 : 440, m = { l: 44, r: 14, t: 14, b: 36 };
+    svg.attr('viewBox', `0 0 ${W} ${H}`).selectAll('*').remove();
+    const x = d3.scaleLinear([0, 300], [m.l, W - m.r]), y = d3.scaleSqrt([0, 80], [H - m.b, m.t]);
+    const ns = d3.range(5, 301, 2);
+    const band = (zv) => d3.area().x((n) => x(n)).y0((n) => y(Math.max(0, 100 * (p6 - zv * Math.sqrt(p6 * (1 - p6) / n))))).y1((n) => y(Math.min(80, 100 * (p6 + zv * Math.sqrt(p6 * (1 - p6) / n))))).curve(d3.curveBasis)(ns);
+    svg.append('path').attr('d', band(3.09)).attr('fill', css('--band'));
+    svg.append('path').attr('d', band(1.96)).attr('fill', css('--band'));
+    [0, 2, 10, 25, 50, 80].forEach((v) => svg.append('text').attr('x', m.l - 8).attr('y', y(v) + 4).attr('text-anchor', 'end').attr('fill', css('--t3')).attr('font-family', 'JetBrains Mono').attr('font-size', 11).text(v + '%'));
+    [0, 100, 200, 300].forEach((v) => svg.append('text').attr('x', x(v)).attr('y', H - 12).attr('text-anchor', 'middle').attr('fill', css('--t3')).attr('font-family', 'JetBrains Mono').attr('font-size', 11).text(v));
+    svg.append('text').attr('x', x(300)).attr('y', y(p6 * 100) - 8).attr('text-anchor', 'end').attr('fill', css('--t3')).attr('font-size', 12).text(`Promedio ${pct(K.p6)}`);
+    const pts = act.filter((s) => s.n6);
+    svg.selectAll('circle').data(pts).join('circle').attr('cx', (s) => x(Math.min(300, s.n6))).attr('cy', (s) => y(Math.min(80, s.neg6))).attr('r', (s) => s.fk === 'ok' ? 4.5 : 6.5)
+      .attr('fill', (s) => flagCol(s.fk)).attr('stroke', css('--s1')).attr('stroke-width', 1.5).style('cursor', 'pointer')
+      .on('mousemove', (e, s) => showTip(e, `<b>${s.nombre}</b>${s.k6} críticas en ${s.n6} reseñas (${pct(s.neg6)})<br><span class="muted">${flagTxt(s)}</span>`)).on('mouseleave', hideTip).on('click', (e, s) => goStore(s.i));
+    const lab = hi.slice(0, sm ? 4 : 7).map((s) => ({ s, x: x(s.n6) + 10, y: y(Math.min(80, s.neg6)) + 4 })).sort((a, b) => a.y - b.y);
+    for (let i = 1; i < lab.length; i++) if (lab[i].y - lab[i - 1].y < 15) lab[i].y = lab[i - 1].y + 15;
+    svg.selectAll('text.l').data(lab).join('text').attr('class', 'l').attr('x', (l) => Math.min(l.x, W - 150)).attr('y', (l) => l.y).attr('fill', css('--t1')).attr('font-size', 12.5).text((l) => l.s.nombre);
+    $('#flist').replaceChildren(...hi.map((s) => el('button', { class: 'fl', onclick: () => goStore(s.i) }, el('span', { class: 'nm' }, s.nombre), el('span', { class: 'v' }, pct(s.neg6)), el('span', { class: 'd' }, `${s.k6} de ${s.n6} reseñas · ${s.estado}`))));
   }
-  function rank() {
-    const cols = sentCol();
-    let rows = act.filter((s) => s.sent).slice().sort((a, b) => a.net - b.net);
-    if (rk === 'pos') rows.reverse(); if (rk !== 'all') rows = rows.slice(0, 12);
-    const mx = Math.max(8, d3.max(rows, (s) => s.sent[1] + s.sent[2]));
-    $('#rank').replaceChildren(...rows.flatMap((s) => [
-      el('span', { class: 'nm', title: s.nombre + ', ' + s.estado, onclick: () => goStore(s.i) }, s.nombre),
-      el('span', { class: 'bar' }, el('i', { style: `width:${(s.sent[2] / mx) * 100}%;background:${cols[2]}` }), el('i', { style: `width:${(s.sent[1] / mx) * 100}%;background:${cols[1]}` })),
-      el('span', { class: 'v', style: `color:${netColor(s.net)}` }, f0(s.net))]));
-  }
-  document.querySelectorAll('#seg-sent button').forEach((b) => b.onclick = () => { rk = b.dataset.v; document.querySelectorAll('#seg-sent button').forEach((x) => x.classList.toggle('on', x === b)); rank(); });
 
   // ---------- Devices ----------
-  const DV = D.devices.filter((d) => d.n >= 3).sort((a, b) => b.n - a.n);
-  const fold = DV.filter((d) => d.fam === 'Plegables'); const foldNeg = d3.sum(fold, (d) => d.neg * d.n) / d3.sum(fold, (d) => d.n);
-  $('#dev-h').textContent = `${DV[0].k} es el más mencionado. Fold y Flip, los que más duelen.`;
-  $('#dev-d').textContent = `${fmt(K.n_dev)} reseñas nombran al menos un dispositivo (${pct(K.n_dev / K.con_texto * 100)} de las que tienen texto). Cuando aparece un plegable, ${D.terr.find((t) => t.id === 'plegables').num} de las veces es una queja: mica, pantalla, garantía. El ecosistema (Watch, Buds, Tab) aparece en compras y configuraciones que salen bien.`;
-  const tip = $('#tip');
-  const showTip = (e, h) => { tip.innerHTML = h; tip.style.opacity = 1; tip.style.left = Math.min(innerWidth - 300, e.clientX + 14) + 'px'; tip.style.top = (e.clientY + 14) + 'px'; };
-  const hideTip = () => { tip.style.opacity = 0; };
-  const devColor = (d) => { const [p, m, n] = sentCol(); return d.neg < 12 ? p : d.neg < 30 ? m : n; };
-  function bubbles() {
-    const box = $('#bubbles'); const W = box.clientWidth || 600, H = W / 1.25;
-    const rh = d3.hierarchy({ children: DV }).sum((d) => d.n);
-    d3.pack().size([W, H]).padding(Math.max(4, W / 110))(rh);
-    const svg = d3.select(box).selectAll('svg').data([0]).join('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Dispositivos más mencionados, por tamaño de burbuja');
-    const g = svg.selectAll('g').data(rh.leaves(), (d) => d.data.k).join((en) => { const g = en.append('g'); g.append('circle'); g.append('text').attr('class', 'a'); g.append('text').attr('class', 'b'); return g; })
-      .attr('transform', (d) => `translate(${d.x},${d.y})`).style('cursor', 'pointer')
-      .on('mousemove', (e, d) => showTip(e, `<b>${d.data.k}</b>${fmt(d.data.n)} menciones · ${pct(d.data.neg)} negativas<br><span class="muted">${f1(d.data.stars)}★ promedio</span>`)).on('mouseleave', hideTip)
-      .on('click', (e, d) => { $('#f-dev').value = String(DEVK.indexOf(d.data.k)); revLimit = 60; renderRevs(); $('#resenas').scrollIntoView({ behavior: 'smooth' }); });
-    g.select('circle').attr('r', (d) => d.r).attr('fill', (d) => devColor(d.data));
-    const short = (k) => k.replace('Galaxy S (anteriores)', 'S anteriores').replace('Galaxy ', '');
-    const lab = (d) => d.r > 58 ? d.data.k.replace(' (anteriores)', '') : d.r > 22 ? short(d.data.k) : '';
-    g.select('text.a').text(lab).attr('text-anchor', 'middle').attr('dy', (d) => d.r > 40 ? '-0.15em' : '0.35em').attr('fill', '#0A0A0F').attr('font-weight', 700).attr('font-size', (d) => Math.max(11, Math.min(18, d.r / 4.4)));
-    g.select('text.b').text((d) => d.r > 40 ? fmt(d.data.n) : '').attr('text-anchor', 'middle').attr('dy', '1.3em').attr('fill', '#0A0A0F').attr('opacity', 0.7).attr('font-family', 'JetBrains Mono').attr('font-size', (d) => Math.max(11, Math.min(15, d.r / 5)));
-  }
-  function devList() {
-    const cols = sentCol();
-    $('#dlist').replaceChildren(...DV.slice(0, 10).map((d) => el('div', { class: 'drow' }, el('span', { class: 'nm' }, d.k), el('span', { class: 'n' }, fmt(d.n), el('span', { class: 'muted' }, ' · ' + pct(d.neg) + ' neg.')),
-      el('div', { class: 'sbar' }, ...[d.pos, d.mix, d.neg].map((v, j) => v > 0 ? el('i', { style: `width:${v}%;background:${cols[j]}` }) : null)))));
+  const DV = D.devices.slice().sort((a, b) => b.rr - a.rr);
+  $('#dev-h').textContent = `Fold y Flip: ${xx(D.fold.rr)} más probable una crítica. Watch y S26, igual que el promedio.`;
+  $('#dev-p').textContent = `Solo ${pct(K.n_dev / K.con_texto * 100)} de las reseñas nombran un equipo (${fmt(K.n_dev)} en total), así que aquí importa el rango de confianza tanto como el número. Lo que sí se puede afirmar: los plegables y los Galaxy S de generaciones pasadas se mencionan mucho más en críticas; el S26, y el Watch, en compras que salen bien.`;
+  function forest() {
+    const svg = d3.select('#forest'); const W = W_('#forest'), sm = W < 600, rowH = 36, m = { l: sm ? 120 : 190, r: sm ? 54 : 90, t: 10, b: 34 }, H = m.t + m.b + DV.length * rowH;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).selectAll('*').remove();
+    const x = d3.scaleLog([0.3, 20], [m.l, W - m.r]);
+    svg.append('rect').attr('x', x(0.3)).attr('width', x(1) - x(0.3)).attr('y', m.t).attr('height', H - m.t - m.b).attr('fill', css('--band')).attr('rx', 8);
+    [0.5, 1, 2, 5, 10, 20].forEach((v) => svg.append('text').attr('x', x(v)).attr('y', H - 10).attr('text-anchor', 'middle').attr('fill', css('--t3')).attr('font-family', 'JetBrains Mono').attr('font-size', 11).text(v + '×'));
+    const g = svg.selectAll('g.r').data(DV).join('g').attr('class', 'r').attr('transform', (d, i) => `translate(0,${m.t + i * rowH + rowH / 2})`).style('cursor', 'pointer')
+      .on('click', (e, d) => { $('#f-dev').value = String(DEVK.indexOf(d.dev)); revLimit = 60; renderRevs(); $('#resenas').scrollIntoView({ behavior: 'smooth' }); })
+      .on('mousemove', (e, d) => showTip(e, `<b>${d.dev}</b>${fmt(d.n)} menciones · ${pct(d.neg)} críticas<br>${xx(d.rr)} contra el promedio (${xx(d.lo)} a ${xx(d.hi)})`)).on('mouseleave', hideTip);
+    const col = (d) => d.lo > 1 ? css('--crit') : d.hi < 1 ? css('--good') : css('--t2');
+    g.append('text').attr('x', m.l - 14).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', css('--t1')).attr('font-size', sm ? 12.5 : 14).attr('font-weight', 600).text((d) => sm ? d.dev.replace('Galaxy ', '') : d.dev);
+    g.append('rect').attr('x', (d) => x(Math.max(0.3, d.lo))).attr('width', (d) => x(Math.min(20, d.hi)) - x(Math.max(0.3, d.lo))).attr('y', -5).attr('height', 10).attr('rx', 5).attr('fill', col).attr('opacity', 0.28);
+    g.append('circle').attr('cx', (d) => x(d.rr)).attr('r', 6.5).attr('fill', col);
+    g.append('text').attr('x', W - 4).attr('dy', '0.35em').attr('text-anchor', 'end').attr('fill', css('--t3')).attr('font-family', 'JetBrains Mono').attr('font-size', 12).text((d) => sm ? fmt(d.n) : `${fmt(d.n)} menc.`);
   }
 
-  // ---------- Tiles ----------
-  function tiles() {
-    const P = D.periodos.slice().sort((a, b) => b.orden - a.orden);
-    const last = D.periodos.find((p) => p.orden === 0), old = D.periodos.find((p) => p.orden === 4);
-    $('#tl-h').textContent = `Las reseñas del último mes son ${pct(last.pct_5)} de 5★. Hace un año, las críticas eran ${f0(old.pct_neg / last.pct_neg)} veces más.`;
-    $('#tl-p').textContent = `${pct(K.pct_ult3m)} de las reseñas son de los últimos 3 meses. Las tiendas están pidiendo reseñas: Maps ya refleja más esa petición que la experiencia, así que cada crítica pesa más de lo que parece.`;
-    const svg = d3.select('#tl'); const W = svg.node().clientWidth || 600, H = 230, m = { l: 2, r: 2, t: 52, b: 34 };
-    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Porcentaje de reseñas negativas por antigüedad').selectAll('*').remove();
-    const x = d3.scaleBand(P.map((p) => p.periodo), [m.l, W - m.r]).padding(0.26), y = d3.scaleLinear([0, d3.max(P, (p) => p.pct_neg)], [H - m.b, m.t]);
-    const g = svg.selectAll('g.b').data(P).join('g').attr('class', 'b');
-    g.append('rect').attr('x', (p) => x(p.periodo)).attr('width', x.bandwidth()).attr('y', (p) => y(p.pct_neg)).attr('height', (p) => Math.max(3, y(0) - y(p.pct_neg))).attr('rx', 6).attr('fill', '#fff').attr('opacity', (p) => p.orden >= 4 ? 1 : 0.5);
-    g.append('text').attr('x', (p) => x(p.periodo) + x.bandwidth() / 2).attr('y', (p) => y(p.pct_neg) - 8).attr('text-anchor', 'middle').attr('fill', '#fff').attr('font-family', 'JetBrains Mono').attr('font-size', W < 500 ? 11 : 13).text((p) => pct(p.pct_neg));
-    g.append('text').attr('x', (p) => x(p.periodo) + x.bandwidth() / 2).attr('y', H - 10).attr('text-anchor', 'middle').attr('fill', '#fff').attr('opacity', 0.75).attr('font-size', W < 500 ? 9.5 : 13).text((p) => W < 500 ? p.periodo.replace('Último mes', '1 mes').replace(' años', 'a').replace(' meses', 'm') : p.periodo);
-    svg.append('text').attr('x', m.l).attr('y', 12).attr('fill', '#fff').attr('opacity', .75).attr('font-size', 13).text('% de reseñas negativas, según su antigüedad');
-    const bl = (rows, lab, val, sub) => { const mx = d3.max(rows, val); return rows.map((r) => el('div', { class: 'bl' }, el('span', {}, lab(r)), el('span', { class: 'n' }, sub(r)), el('div', { class: 'track' }, el('i', { style: `width:${(val(r) / mx) * 100}%` })))); };
-    $('#dol').replaceChildren(...bl(D.dolores.slice(0, 6), (d) => d.dolor, (d) => d.resenas, (d) => fmt(d.resenas)));
-    $('#mot').replaceChildren(...bl(D.motores.slice(0, 5), (d) => d.motivo, (d) => d.resenas, (d) => fmt(d.resenas)));
-    const tp = D.temas_pct.slice().sort((a, b) => b.pct_negativas - a.pct_negativas).slice(0, 6);
-    $('#tem').replaceChildren(...tp.map((t) => el('div', { class: 'bl' }, el('span', {}, t.tema), el('span', { class: 'n' }, `${pct(t.pct_positivas)} · ${pct(t.pct_negativas)}`),
-      el('div', { class: 'track', style: 'background:none' }, el('i', { style: `width:${t.pct_positivas / 2}%;background:#5DCAA5` }), el('i', { style: `width:${t.pct_negativas / 2}%;background:#FF6B6B` })))),
-      el('div', { class: 'slg', style: 'color:rgba(255,255,255,.78);margin-top:4px' }, el('span', {}, el('i', { class: 'sw', style: 'background:#5DCAA5' }), '% de las positivas que lo mencionan'), el('span', {}, el('i', { class: 'sw', style: 'background:#FF6B6B' }), '% de las negativas')));
-  }
+  // ---------- Ops ----------
+  const closed = S.filter((s) => s.estatus === 'cerrada').length, noFicha = S.filter((s) => s.estatus === 'sin_ficha').length;
+  $('#ops').append(
+    el('div', { class: 'op' }, el('div', { class: 'v', style: 'color:var(--crit)' }, pct(K.resp_crit)), el('p', {}, `de las ${fmt(K.n_crit)} reseñas de 1 a 3★ no tienen respuesta. Polanco contesta ${pct(K.pct_resp_polanco)} de todas sus reseñas; el resto, casi ninguna.`), qEl(Q.maps[0])),
+    el('div', { class: 'op' }, el('div', { class: 'v' }, String(closed + noFicha)), el('p', {}, `tiendas del localizador de Samsung que en Google Maps aparecen cerradas (${closed}) o no tienen ficha (${noFicha}). Quien las busque va a pensar que ya no existen.`)),
+    el('div', { class: 'op' }, el('div', { class: 'v' }, String(hi.length)), el('p', {}, `tiendas con más críticas de lo esperado en 6 meses. Antes de mandarles tráfico conviene revisar qué está pasando ahí: ${hi.slice(0, 3).map((s) => s.nombre).join(', ')}.`)));
 
   // ---------- Table ----------
-  let sortK = 'net', sortD = 1, qS = '';
-  const tb = $('#t-store tbody');
+  let sortK = 'eb6', sortD = -1, qS = '';
   function renderStores() {
-    const num = ['calif', 'net', 'asesor'].includes(sortK);
+    const num = ['calif', 'eb6', 'asesor'].includes(sortK);
     const rows = act.filter((s) => !qS || strip([s.nombre, s.estado, s.municipio, s.plaza].join(' ')).includes(qS))
       .sort((a, b) => (num ? sortD * ((a[sortK] ?? -1) - (b[sortK] ?? -1)) : sortD * String(a[sortK] || '').localeCompare(String(b[sortK] || ''), 'es')));
-    tb.replaceChildren(...rows.map((s) => el('tr', { class: 'click', tabindex: '0', onclick: () => goStore(s.i), onkeydown: (e) => { if (e.key === 'Enter') goStore(s.i); } },
-      el('td', {}, el('div', { style: 'font-weight:600' }, s.nombre), el('div', { class: 'muted small' }, s.municipio)), el('td', { class: 'hs' }, s.estado),
-      el('td', { class: 'r num' }, s.calif != null ? f1(s.calif) : '—'),
-      el('td', {}, el('span', { class: 'num', style: `color:${netColor(s.net)}` }, s.net != null ? 'Neto ' + f0(s.net) : '—'), sbar(s, 8)),
-      el('td', { class: 'r hs num' }, f0(s.asesor) + '%'), el('td', { class: 'hs' }, s.devtop || '—'), el('td', { class: 'hs muted' }, s.dolor || '—'))));
+    $('#t-store tbody').replaceChildren(...rows.map((s) => el('tr', { class: 'click', tabindex: '0', onclick: () => goStore(s.i), onkeydown: (e) => { if (e.key === 'Enter') goStore(s.i); } },
+      el('td', {}, el('div', { style: 'font-weight:600' }, s.nombre), el('div', { class: 'muted small' }, `${s.municipio}, ${s.estado}`)),
+      el('td', { class: 'r num' }, f1(s.calif)),
+      el('td', { class: 'r' }, el('span', { class: 'num', style: `color:${flagCol(s.fk)};font-weight:500` }, pct(s.eb6)), el('div', { class: 'muted', style: 'font-size:12px' }, `${s.k6} de ${s.n6}`)),
+      el('td', { class: 'hs' }, spark(s)), el('td', { class: 'r hs num' }, f0(s.asesor) + '%'), el('td', { class: 'hs' }, s.devtop || '—'), el('td', { class: 'hs muted' }, s.dolor || '—'))));
     $('#c-store').textContent = `${rows.length} tiendas`;
   }
-  document.querySelectorAll('#t-store th button').forEach((b) => b.addEventListener('click', () => { const kk = b.dataset.k; sortD = sortK === kk ? -sortD : (['nombre', 'estado', 'dolor', 'devtop', 'net'].includes(kk) ? 1 : -1); sortK = kk; renderStores(); }));
+  document.querySelectorAll('#t-store th button').forEach((b) => b.addEventListener('click', () => { const kk = b.dataset.k; sortD = sortK === kk ? -sortD : (['nombre', 'dolor', 'devtop'].includes(kk) ? 1 : -1); sortK = kk; renderStores(); }));
   $('#q-store').addEventListener('input', (e) => { qS = strip(e.target.value.trim()); renderStores(); });
 
   // ---------- Reviews ----------
-  const fStore = $('#f-store'), fSent = $('#f-sent'), fDev = $('#f-dev'), fTopic = $('#f-topic');
+  const fStore = $('#f-store'), fSent = $('#f-sent'), fDev = $('#f-dev'), fTopic = $('#f-topic'), fLg = $('#f-lg');
   fStore.append(new Option('Todas las tiendas', ''), ...act.slice().sort((a, b) => a.nombre.localeCompare(b.nombre, 'es')).map((s) => new Option(s.nombre, String(s.i))));
-  fDev.append(new Option('Todo dispositivo', ''), ...DEVK.map((k, j) => new Option(k, String(j))).filter((o) => DV.some((d) => d.k === o.text)));
+  fDev.append(new Option('Todo dispositivo', ''), ...DEVK.map((k, j) => new Option(k, String(j))).filter((o) => D.devices.some((d) => d.dev === o.text)));
   fTopic.append(new Option('Todo tema', ''), new Option('Nombra al asesor', 'asesor'), ...TOP.map((t, j) => new Option(t, String(j))));
   let revLimit = 60;
   const R2 = R.filter((r) => r[4]).map((r) => ({ r, n: strip(r[4]) }));
-  const SL = ['Positiva', 'Con fricción', 'Negativa'];
+  const SL = ['Positiva', 'Con fricción', 'Crítica'];
   function renderRevs() {
-    const q = strip($('#q-rev').value.trim()), st = fStore.value, sv = fSent.value, dv = fDev.value, tp = fTopic.value; const cols = sentCol();
-    const rows = R2.filter(({ r, n }) => (!st || r[0] === +st) && (sv === '' || r[7] === +sv) && (!dv || (r[8] & (1 << +dv))) && (!tp || (tp === 'asesor' ? r[6] : r[5] & (1 << +tp))) && (!q || n.includes(q)));
+    const q = strip($('#q-rev').value.trim()), st = fStore.value, sv = fSent.value, dv = fDev.value, tp = fTopic.value, lg = fLg.value; const cols = [css('--good'), css('--warn'), css('--crit')];
+    const rows = R2.filter(({ r, n }) => (!st || r[0] === +st) && (sv === '' || r[7] === +sv) && (!dv || (r[8] & (1 << +dv))) && (!tp || (tp === 'asesor' ? r[6] : r[5] & (1 << +tp))) && (!lg || r[9]) && (!q || n.includes(q)));
     $('#c-rev').textContent = `${fmt(rows.length)} reseñas`;
     $('#t-rev tbody').replaceChildren(...rows.slice(0, revLimit).map(({ r }) => el('tr', {},
-      el('td', { style: 'white-space:nowrap', class: 'muted' }, r[3]), el('td', { style: 'white-space:nowrap' }, S[r[0]].nombre),
-      el('td', {}, el('span', { class: 'stars' + (r[1] >= 4 ? ' good' : '') }, '★'.repeat(r[1])), el('div', { class: 'small muted', style: 'white-space:nowrap' }, el('span', { class: 'sdot', style: `background:${cols[r[7]] || 'var(--none)'}` }), SL[r[7]] || '')),
+      el('td', { style: 'white-space:nowrap', class: 'muted' }, r[3], r[9] ? el('div', { style: 'font-size:12px' }, 'Local Guide') : null), el('td', { style: 'white-space:nowrap' }, S[r[0]].nombre),
+      el('td', {}, el('span', { class: 'stars' + (r[1] >= 4 ? ' good' : '') }, '★'.repeat(r[1])), el('div', { class: 'small muted', style: 'white-space:nowrap' }, el('span', { class: 'sdot', style: `background:${cols[r[7]] || 'var(--t4)'}` }), SL[r[7]] || '')),
       el('td', { class: 'txt' }, r[4]),
       el('td', { class: 'hs small muted' }, [...DEVK.filter((k, j) => r[8] & (1 << j)), ...TOP.filter((t, j) => r[5] & (1 << j))].join(', ')))));
     $('#more-rev').parentElement.hidden = rows.length <= revLimit;
   }
-  ['q-rev', 'f-store', 'f-sent', 'f-dev', 'f-topic'].forEach((id) => $('#' + id).addEventListener(id === 'q-rev' ? 'input' : 'change', () => { revLimit = 60; renderRevs(); }));
+  ['q-rev', 'f-store', 'f-sent', 'f-dev', 'f-topic', 'f-lg'].forEach((id) => $('#' + id).addEventListener(id === 'q-rev' ? 'input' : 'change', () => { revLimit = 60; renderRevs(); }));
   $('#more-rev').onclick = () => { revLimit += 120; renderRevs(); };
-  $('#f-src').textContent = `Últimas 300 reseñas públicas de Google Maps por tienda (${fmt(K.resenas)} en total), recopiladas el ${D.corte}. ${K.tiendas} tiendas activas de las 69 del localizador de Samsung.`;
+
+  // ---------- Method ----------
+  $('#method').append(
+    el('div', {}, el('h4', {}, 'Fuente'), el('p', {}, `Últimas 300 reseñas públicas de Google Maps de cada tienda (${fmt(K.resenas)} en total), recopiladas el ${D.corte}. ${K.tiendas} tiendas activas de las 69 del localizador de Samsung. Las fechas son relativas (“hace 2 meses”) y por eso aproximadas.`),
+      el('p', {}, `Las comparaciones entre tiendas usan solo los últimos 6 meses, para que todas se midan en la misma ventana. El porcentaje “ajustado” acerca al promedio a las tiendas con pocas reseñas, para que una tienda con 13 reseñas no parezca extrema por azar.`)),
+    el('div', {}, el('h4', {}, 'Clasificación'), el('p', {}, `Cada reseña se clasifica como positiva, con fricción o crítica según sus estrellas y su texto, con diccionarios en español. Lo validamos leyendo a mano ${V.n_dev} reseñas para ajustar las reglas y otras ${V.n_hold}, nuevas, para medir: acierta en ${V.acc_hold}% de las de control. Las críticas se detectan bien (${V.hold.N[0]}% de precisión). La fricción en reseñas positivas es difícil de captar (${V.hold.M[0]}% de precisión) y es rara: menos de 1% de las reseñas.`)),
+    el('div', {}, el('h4', {}, 'Cómo leer los números'), el('p', {}, '“Veces más probable” compara la proporción de críticas en las reseñas que mencionan algo contra las que no lo mencionan. Los rangos son de 95% de confianza. Son asociaciones, no causas: muestran dónde mirar.'),
+      el('p', {}, 'Mapa: MapLibre GL con mapas de OpenFreeMap y datos de OpenStreetMap, sin costo y sin llaves.')));
 
   // ---------- Boot ----------
-  function paint() { drawDots(); sentiment(); bubbles(); devList(); tiles(); renderStores(); renderRevs(); }
-  paint(); renderPanel();
+  function paint() { drawDots(); pairs(); mon(); territories(); drivers(); funnel(); forest(); renderStores(); renderRevs(); }
+  paint(); renderPanel(null);
   try { initMap(); } catch (e) { $('#map').textContent = 'No se pudo iniciar el mapa en este navegador.'; console.error(e); }
   $('#theme').onclick = () => { root.classList.toggle('light'); try { localStorage.setItem('ssp-theme', isLight() ? 'light' : 'dark'); } catch (e) {} paint(); renderPanel(); restyle(); };
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { drawDots(); bubbles(); tiles(); }, 160); });
+  let rt, lw = innerWidth; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { if (innerWidth === lw) return; lw = innerWidth; drawDots(); mon(); drivers(); funnel(); forest(); }, 160); });
   window.__ssp = { selectStore, get map() { return map; } };
 })();
 </script>
